@@ -17,3 +17,6 @@ When using Best Bike Split or when trying to keep your Variability Index low, yo
 3) Addition of colour.  I plan to add colour either to the font or as a progress-bar behind the numbers to indicate your current power and your peak power in relation to your goal.
 
 4) Initial release on Garmin Connect.
+
+5) Improve efficiency.  Right now I have a collection for each of the time periods.  This is not needed.  I plan to change the design so that each time period only has offset references into one collection.  That collection needs to be the size of the largest time period, but only one tmie period is needed.
+
