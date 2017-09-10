@@ -1,7 +1,11 @@
 using Toybox.WatchUi as Ui;
 using Toybox.Graphics as Gfx;
+using Toybox.System;
 
-class PowerFieldView extends Ui.DataField {
+class PowerFieldView extends Ui.DataField
+{
+    protected var mTimerRunning = false;
+
     protected var mHeart;
     protected var mPower3s;
     protected var mPower30s;
@@ -52,9 +56,35 @@ class PowerFieldView extends Ui.DataField {
         mPeak7200s = 0.0f;
     }
 
+
+    //! Timer transitions from stopped to running state
+    function onTimerStart()
+    {
+        if (!mTimerRunning)
+        {
+            //var activityMonitorInfo = getActivityMonitorInfo();
+            mTimerRunning = true;
+        }
+    }
+
+    //! Timer transitions from running to stopped state
+    function onTimerStop()
+    {
+        mTimerRunning = false;
+    }
+
+    //! Activity is ended
+    function onTimerReset()
+    {
+    }
+
+
+
+
     // Set your layout here. Anytime the size of obscurity of
     // the draw context is changed this will be called.
-    function onLayout(dc) {
+    function onLayout(dc)
+    {
         var obscurityFlags = DataField.getObscurityFlags();
 
         // Top left quadrant so we'll use the top left layout
@@ -116,51 +146,64 @@ class PowerFieldView extends Ui.DataField {
     // Calculate a value and save it locally in this method.
     // Note that compute() and onUpdate() are asynchronous, and there is no
     // guarantee that compute() will be called before onUpdate().
-    function compute(info) {
+    function compute(info)
+    {
+        System.println("in Compute: " + info.toString());
+        // return if timer is not running.
+        if(! mTimerRunning)
+        {
+                return;
+            }
         // See Activity.Info in the documentation for available information.
         if(info has :currentHeartRate)
         {
-            if(info.currentHeartRate != null){
+            if(info.currentHeartRate != null)
+            {
+                System.println("in Compute Heart Rate: " + info.currentHeartRate);
                 mHeart = info.currentHeartRate;
-            } else {
+            }
+            else
+            {
                 mHeart = 0.0f;
             }
         }
         if(info has :currentPower)
         {
-                if(info.currentPower != null)
-                {
-                    mPower3s = powerCalc3s.update(info.currentPower);
-                    mPower30s = powerCalc30s.update(info.currentPower);
-                    mPower120s = powerCalc120s.update(info.currentPower);
-                    mPower300s = powerCalc300s.update(info.currentPower);
-                    mPower1200s = powerCalc1200s.update(info.currentPower);
-                    mPower3600s = powerCalc3600s.update(info.currentPower);
-                    mPower7200s = powerCalc7200s.update(info.currentPower);
-                }
-                else
-                {
-                    mPower3s = 0.0f;
-                    mPower30s = 0.0f;
-                    mPower120s = 0.0f;
-                    mPower300s = 0.0f;
-                    mPower1200s = 0.0f;
-                    mPower3600s = 0.0f;
-                    mPower7200s = 0.0f;
-                }
-                    if(mPeak3s < mPower3s) {mPeak3s = mPower3s;}
-                    if(mPeak30s < mPower30s) {mPeak30s = mPower30s;}
-                    if(mPeak120s < mPower120s) {mPeak120s = mPower120s;}
-                    if(mPeak300s < mPower300s) {mPeak300s = mPower300s;}
-                    if(mPeak1200s < mPower1200s) {mPeak1200s = mPower1200s;}
-                    if(mPeak3600s < mPower3600s) {mPeak3600s = mPower3600s;}
-                    if(mPeak7200s < mPower7200s) {mPeak7200s = mPower7200s;}
+            if(info.currentPower != null)
+            {
+                System.println("in Compute Power: " + info.currentPower);
+                mPower3s = powerCalc3s.update(info.currentPower);
+                mPower30s = powerCalc30s.update(info.currentPower);
+                mPower120s = powerCalc120s.update(info.currentPower);
+                mPower300s = powerCalc300s.update(info.currentPower);
+                mPower1200s = powerCalc1200s.update(info.currentPower);
+                mPower3600s = powerCalc3600s.update(info.currentPower);
+                mPower7200s = powerCalc7200s.update(info.currentPower);
             }
+            else
+            {
+                mPower3s = 0.0f;
+                mPower30s = 0.0f;
+                mPower120s = 0.0f;
+                mPower300s = 0.0f;
+                mPower1200s = 0.0f;
+                mPower3600s = 0.0f;
+                mPower7200s = 0.0f;
+            }
+            if(mPeak3s < mPower3s) {mPeak3s = mPower3s;}
+            if(mPeak30s < mPower30s) {mPeak30s = mPower30s;}
+            if(mPeak120s < mPower120s) {mPeak120s = mPower120s;}
+            if(mPeak300s < mPower300s) {mPeak300s = mPower300s;}
+            if(mPeak1200s < mPower1200s) {mPeak1200s = mPower1200s;}
+            if(mPeak3600s < mPower3600s) {mPeak3600s = mPower3600s;}
+            if(mPeak7200s < mPower7200s) {mPeak7200s = mPower7200s;}
+        }
     }
 
     // Display the value you computed here. This will be called
     // once a second when the data field is visible.
-    function onUpdate(dc) {
+    function onUpdate(dc)
+    {
         // Set the background color
         View.findDrawableById("Background").setColor(getBackgroundColor());
 
@@ -216,6 +259,11 @@ class PowerFieldView extends Ui.DataField {
 
         // Call parent's onUpdate(dc) to redraw the layout
         View.onUpdate(dc);
+    }
+
+    function getActivityMonitorInfo()
+    {
+        return Toybox.ActivityMonitor.getInfo();
     }
 
 }
