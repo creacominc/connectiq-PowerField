@@ -148,7 +148,7 @@ class PowerFieldView extends Ui.DataField
     // guarantee that compute() will be called before onUpdate().
     function compute(info)
     {
-        System.println("in Compute: " + info.toString());
+        //System.println("in Compute: timer=" + mTimerRunning);
         // return if timer is not running.
         if(! mTimerRunning)
         {
@@ -159,7 +159,7 @@ class PowerFieldView extends Ui.DataField
         {
             if(info.currentHeartRate != null)
             {
-                System.println("in Compute Heart Rate: " + info.currentHeartRate);
+                //System.println("in Compute Heart Rate: " + info.currentHeartRate);
                 mHeart = info.currentHeartRate;
             }
             else
@@ -171,7 +171,7 @@ class PowerFieldView extends Ui.DataField
         {
             if(info.currentPower != null)
             {
-                System.println("in Compute Power: " + info.currentPower);
+                //System.println("in Compute Power: " + info.currentPower);
                 mPower3s = powerCalc3s.update(info.currentPower);
                 mPower30s = powerCalc30s.update(info.currentPower);
                 mPower120s = powerCalc120s.update(info.currentPower);
