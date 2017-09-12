@@ -1,27 +1,51 @@
 <settings>
-
-    <setting propertyKey="@Properties.appVersion" title="@Strings.AppVersionTitle">
-        <settingConfig type="alphaNumeric" readonly="true" />
+    <setting propertyKey="@Properties.Time0" title="@Strings.TimeTitle" prompt="@Strings.TimePrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.TimeError" />
+    </setting>
+    <setting propertyKey="@Properties.Target0" title="@Strings.TargetTitle" prompt="@Strings.TargetPrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.TargetError" />
     </setting>
 
-    <setting propertyKey="@Properties.myString" title="@Strings.MyStringTitle" prompt="@Strings.MyStringPrompt">
-        <settingConfig type="list">
-            <listEntry value="0">@Strings.HelloWorld</listEntry>
-            <listEntry value="1">@Strings.Ackbar</listEntry>
-            <listEntry value="2">@Strings.Garmin</listEntry>
-        </settingConfig>
+    <setting propertyKey="@Properties.Time1" title="@Strings.TimeTitle" prompt="@Strings.TimePrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.TimeError" />
+    </setting>
+    <setting propertyKey="@Properties.Target1" title="@Strings.TargetTitle" prompt="@Strings.TargetPrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.TargetError" />
     </setting>
 
-    <setting propertyKey="@Properties.myNumber" title="@Strings.MyNumberTitle" prompt="@Strings.MyNumberPrompt">
-        <settingConfig type="numeric" errorMessage="@Strings.MyNumberError" />
+    <setting propertyKey="@Properties.Time2" title="@Strings.TimeTitle" prompt="@Strings.TimePrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.TimeError" />
+    </setting>
+    <setting propertyKey="@Properties.Target2" title="@Strings.TargetTitle" prompt="@Strings.TargetPrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.TargetError" />
     </setting>
 
-    <setting propertyKey="@Properties.screenSleep" title="@Strings.ScreenSleepTitle">
-        <settingConfig type="boolean" />
+    <setting propertyKey="@Properties.Time3" title="@Strings.TimeTitle" prompt="@Strings.TimePrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.TimeError" />
+    </setting>
+    <setting propertyKey="@Properties.Target3" title="@Strings.TargetTitle" prompt="@Strings.TargetPrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.TargetError" />
     </setting>
 
-    <setting propertyKey="@Properties.username" title="@Strings.UsernameTitle">
-        <settingConfig type="alphaNumeric" required="true" />
+    <setting propertyKey="@Properties.Time4" title="@Strings.TimeTitle" prompt="@Strings.TimePrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.TimeError" />
+    </setting>
+    <setting propertyKey="@Properties.Target4" title="@Strings.TargetTitle" prompt="@Strings.TargetPrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.TargetError" />
+    </setting>
+
+    <setting propertyKey="@Properties.Time5" title="@Strings.TimeTitle" prompt="@Strings.TimePrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.TimeError" />
+    </setting>
+    <setting propertyKey="@Properties.Target5" title="@Strings.TargetTitle" prompt="@Strings.TargetPrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.TargetError" />
+    </setting>
+
+    <setting propertyKey="@Properties.Time6" title="@Strings.TimeTitle" prompt="@Strings.TimePrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.TimeError" />
+    </setting>
+    <setting propertyKey="@Properties.Target6" title="@Strings.TargetTitle" prompt="@Strings.TargetPrompt">
+        <settingConfig type="numeric" errorMessage="@Strings.TargetError" />
     </setting>
 
 </settings>

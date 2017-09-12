@@ -1,7 +1,16 @@
 <properties>
-    <property id="appVersion" type="string">1.0.3</property>
-    <property id="myString" type="number">0</property>
-    <property id="myNumber" type="number">500</property>
-    <property id="screenSleep" type="boolean">true</property>
-    <property id="username" type="string"></property>
+    <property id="Time0" type="number">3</property>
+    <property id="Target0" type="number">800</property>
+    <property id="Time1" type="number">30</property>
+    <property id="Target1" type="number">700</property>
+    <property id="Time2" type="number">150</property>
+    <property id="Target2" type="number">400</property>
+    <property id="Time3" type="number">300</property>
+    <property id="Target3" type="number">275</property>
+    <property id="Time4" type="number">1200</property>
+    <property id="Target4" type="number">240</property>
+    <property id="Time5" type="number">3600</property>
+    <property id="Target5" type="number">190</property>
+    <property id="Time6" type="number">7200</property>
+    <property id="Target6" type="number">130</property>
 </properties>

@@ -6,6 +6,12 @@ class PowerFieldView extends Ui.DataField
 {
     protected var mTimerRunning = false;
 
+    // collection of 7 PowerIntervals
+    protected var m_PowerIntervals = [
+    	      	  		     new PowerInterval( 3, 800, 0.8 * 800 ),
+    	      	  		     new PowerInterval( 30, 600, 0.8 * 600 ),
+    	      	  		   ];
+
     protected var mHeart;
     protected var mPower3s;
     protected var mPower30s;
