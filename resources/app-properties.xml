@@ -1,0 +1,7 @@
+<properties>
+    <property id="appVersion" type="string">1.0.3</property>
+    <property id="myString" type="number">0</property>
+    <property id="myNumber" type="number">500</property>
+    <property id="screenSleep" type="boolean">true</property>
+    <property id="username" type="string"></property>
+</properties>

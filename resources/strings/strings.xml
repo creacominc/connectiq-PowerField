@@ -1,5 +1,15 @@
 <strings>
     <string id="AppName">PowerField</string>
-
     <string id="label">Hr/Power</string>
+    <string id="AppVersionTitle">1.0.0</string>
+    <string id="MyStringTitle">title</string>
+    <string id="MyStringPrompt">prompt</string>
+    <string id="MyNumberTitle">n-title</string>
+    <string id="MyNumberPrompt">n-prompt</string>
+    <string id="ScreenSleepTitle">screenSleep</string>
+    <string id="UsernameTitle">UsernameTitle</string>
+    <string id="HelloWorld">HelloWorld</string>
+    <string id="Ackbar">Ackbar</string>
+    <string id="Garmin">Garmin</string>
+    <string id="MyNumberError">number error</string>
 </strings>
