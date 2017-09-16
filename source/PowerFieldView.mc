@@ -4,9 +4,9 @@ using Toybox.System;
 
 class PowerFieldView extends Ui.DataField
 {
-    protected var mTimerRunning = false;
-
+    protected var m_TimerRunning = false;
     protected var m_heart;
+    protected var m_elapsedTime;
 
     protected var m_powerIntervalSet;
 
@@ -14,6 +14,7 @@ class PowerFieldView extends Ui.DataField
     {
         DataField.initialize();
         m_heart = 0.0f;
+        m_elapsedTime = 0;
         m_powerIntervalSet = new PowerIntervalSet(7);
     }
 
@@ -21,17 +22,17 @@ class PowerFieldView extends Ui.DataField
     //! Timer transitions from stopped to running state
     function onTimerStart()
     {
-        if (!mTimerRunning)
+        if (!m_TimerRunning)
         {
             //var activityMonitorInfo = getActivityMonitorInfo();
-            mTimerRunning = true;
+            m_TimerRunning = true;
         }
     }
 
     //! Timer transitions from running to stopped state
     function onTimerStop()
     {
-        mTimerRunning = false;
+        m_TimerRunning = false;
     }
 
     //! Activity is ended
@@ -78,9 +79,9 @@ class PowerFieldView extends Ui.DataField
     // guarantee that compute() will be called before onUpdate().
     function compute(info)
     {
-        //System.println("in Compute: timer=" + mTimerRunning);
+        //System.println("in Compute: timer=" + m_TimerRunning);
         // return if timer is not running.
-        if(! mTimerRunning)
+        if(! m_TimerRunning)
         {
                 return;
         }
@@ -104,6 +105,10 @@ class PowerFieldView extends Ui.DataField
                 m_powerIntervalSet.update(info.currentPower);
             }
         }
+        if(info has :elapsedTime)
+        {
+                m_elapsedTime = info.elapsedTime;
+            }
     }
 
     // Display the value you computed here. This will be called
@@ -112,17 +117,14 @@ class PowerFieldView extends Ui.DataField
     {
         // Set the background color
         View.findDrawableById("Background").setColor(getBackgroundColor());
+        var backgroundColor = getBackgroundColor();
 
         // Set the foreground color and value
         var heart = View.findDrawableById("heart");
-        if (getBackgroundColor() == Gfx.COLOR_BLACK) {
-            heart.setColor(Gfx.COLOR_WHITE);
-        } else {
-            heart.setColor(Gfx.COLOR_BLACK);
-        }
+        heart.setColor( (backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK );
         heart.setText(m_heart.format("%.0f") + " bpm");
 
-        var backgroundColor = getBackgroundColor();
+        var fontColor = ( backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
 
         // populate fields
         var avgFields = new [7];
@@ -135,20 +137,16 @@ class PowerFieldView extends Ui.DataField
                 durationFields[indx] = View.findDrawableById("duration" + indx);
                 peakFields[indx]     = View.findDrawableById("peak" + indx);
                 targetFields[indx]   = View.findDrawableById("target" + indx);
-                if( backgroundColor == Gfx.COLOR_BLACK)
+                // set field to gray if the time has not expired
+                if( m_elapsedTime/1000 < m_powerIntervalSet.getDuration(indx) )
                 {
-                        avgFields[indx].setColor(Gfx.COLOR_WHITE);
-                        durationFields[indx].setColor(Gfx.COLOR_WHITE);
-                        peakFields[indx].setColor(Gfx.COLOR_WHITE);
-                        targetFields[indx].setColor(Gfx.COLOR_WHITE);
+                    //System.println("Elapsed: " + m_elapsedTime + ".  Duration(" +indx+ ") == " + m_powerIntervalSet.getDuration(indx));
+                    fontColor = Gfx.COLOR_LT_GRAY;
                 }
-                else
-                {
-                        avgFields[indx].setColor(Gfx.COLOR_BLACK);
-                        durationFields[indx].setColor(Gfx.COLOR_BLACK);
-                        peakFields[indx].setColor(Gfx.COLOR_BLACK);
-                        targetFields[indx].setColor(Gfx.COLOR_BLACK);
-                }
+                avgFields[indx].setColor(fontColor);
+                durationFields[indx].setColor(fontColor);
+                peakFields[indx].setColor(fontColor);
+                targetFields[indx].setColor(fontColor);
                 avgFields[indx].setText(m_powerIntervalSet.getAverage(indx).toString() + "W");
                 durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
                 peakFields[indx].setText(m_powerIntervalSet.getPeak(indx).toString() + "W");
