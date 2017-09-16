@@ -6,14 +6,14 @@ class PowerFieldView extends Ui.DataField
 {
     protected var mTimerRunning = false;
 
-    protected var mHeart;
+    protected var m_heart;
 
     protected var m_powerIntervalSet;
 
     function initialize()
     {
         DataField.initialize();
-        mHeart = 0.0f;
+        m_heart = 0.0f;
         m_powerIntervalSet = new PowerIntervalSet(7);
     }
 
@@ -66,40 +66,9 @@ class PowerFieldView extends Ui.DataField
 
         // Use the generic, centered layout
         } else {
-                var offset = -85;
-                var space = 0;
-                var delta = 20;
             View.setLayout(Rez.Layouts.MainLayout(dc));
-            var labelView = View.findDrawableById("label");
-            labelView.locY = labelView.locY + offset + space;
-            space += delta;
-            var heartView = View.findDrawableById("heart");
-            heartView.locY = heartView.locY + offset + space;
-            space += delta;
-            var powerView3s = View.findDrawableById("power3s");
-            powerView3s.locY = powerView3s.locY + offset + space;
-            space += delta;
-            var powerView30s = View.findDrawableById("power30s");
-            powerView30s.locY = powerView30s.locY + offset + space;
-            space += delta;
-            var powerView120s = View.findDrawableById("power120s");
-            powerView120s.locY = powerView120s.locY + offset + space;
-            space += delta;
-            var powerView300s = View.findDrawableById("power300s");
-            powerView300s.locY = powerView300s.locY + offset + space;
-            space += delta;
-            var powerView1200s = View.findDrawableById("power1200s");
-            powerView1200s.locY = powerView1200s.locY + offset + space;
-            space += delta;
-            var powerView3600s = View.findDrawableById("power3600s");
-            powerView3600s.locY = powerView3600s.locY + offset + space;
-            space += delta;
-            var powerView7200s = View.findDrawableById("power7200s");
-            powerView7200s.locY = powerView7200s.locY + offset + space;
-            space += delta;
         }
 
-        View.findDrawableById("label").setText(Rez.Strings.label);
         return true;
     }
 
@@ -121,11 +90,11 @@ class PowerFieldView extends Ui.DataField
             if(info.currentHeartRate != null)
             {
                 //System.println("in Compute Heart Rate: " + info.currentHeartRate);
-                mHeart = info.currentHeartRate;
+                m_heart = info.currentHeartRate;
             }
             else
             {
-                mHeart = 0.0f;
+                m_heart = 0.0f;
             }
         }
         if(info has :currentPower)
@@ -151,42 +120,40 @@ class PowerFieldView extends Ui.DataField
         } else {
             heart.setColor(Gfx.COLOR_BLACK);
         }
-        heart.setText(mHeart.format("%.0f") + " bpm");
+        heart.setText(m_heart.format("%.0f") + " bpm");
 
-        // populate power data
-        var power3s = View.findDrawableById("power3s");
-        var power30s = View.findDrawableById("power30s");
-        var power120s = View.findDrawableById("power120s");
-        var power300s = View.findDrawableById("power300s");
-        var power1200s = View.findDrawableById("power1200s");
-        var power3600s = View.findDrawableById("power3600s");
-        var power7200s = View.findDrawableById("power7200s");
-        if (getBackgroundColor() == Gfx.COLOR_BLACK) {
-            power3s.setColor(Gfx.COLOR_WHITE);
-            power30s.setColor(Gfx.COLOR_WHITE);
-            power120s.setColor(Gfx.COLOR_WHITE);
-            power300s.setColor(Gfx.COLOR_WHITE);
-            power1200s.setColor(Gfx.COLOR_WHITE);
-            power3600s.setColor(Gfx.COLOR_WHITE);
-            power7200s.setColor(Gfx.COLOR_WHITE);
-        } else {
-            power3s.setColor(Gfx.COLOR_BLACK);
-            power30s.setColor(Gfx.COLOR_BLACK);
-            power120s.setColor(Gfx.COLOR_BLACK);
-            power300s.setColor(Gfx.COLOR_BLACK);
-            power1200s.setColor(Gfx.COLOR_BLACK);
-            power3600s.setColor(Gfx.COLOR_BLACK);
-            power7200s.setColor(Gfx.COLOR_BLACK);
+        var backgroundColor = getBackgroundColor();
+
+        // populate fields
+        var avgFields = new [7];
+        var durationFields = new [7];
+        var peakFields = new [7];
+        var targetFields = new [7];
+        for( var indx = 0; indx < 7; indx++ )
+        {
+                avgFields[indx]      = View.findDrawableById("avg" + indx);
+                durationFields[indx] = View.findDrawableById("duration" + indx);
+                peakFields[indx]     = View.findDrawableById("peak" + indx);
+                targetFields[indx]   = View.findDrawableById("target" + indx);
+                if( backgroundColor == Gfx.COLOR_BLACK)
+                {
+                        avgFields[indx].setColor(Gfx.COLOR_WHITE);
+                        durationFields[indx].setColor(Gfx.COLOR_WHITE);
+                        peakFields[indx].setColor(Gfx.COLOR_WHITE);
+                        targetFields[indx].setColor(Gfx.COLOR_WHITE);
+                }
+                else
+                {
+                        avgFields[indx].setColor(Gfx.COLOR_BLACK);
+                        durationFields[indx].setColor(Gfx.COLOR_BLACK);
+                        peakFields[indx].setColor(Gfx.COLOR_BLACK);
+                        targetFields[indx].setColor(Gfx.COLOR_BLACK);
+                }
+                avgFields[indx].setText(m_powerIntervalSet.getAverage(indx).toString() + "W");
+                durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
+                peakFields[indx].setText(m_powerIntervalSet.getPeak(indx).toString() + "W");
+                targetFields[indx].setText(m_powerIntervalSet.getTarget(indx).toString() + "W");
         }
-
-        power3s.setText(m_powerIntervalSet.getText(0));
-        power30s.setText(m_powerIntervalSet.getText(1));
-        power120s.setText(m_powerIntervalSet.getText(2));
-        power300s.setText(m_powerIntervalSet.getText(3));
-        power1200s.setText(m_powerIntervalSet.getText(4));
-        power3600s.setText(m_powerIntervalSet.getText(5));
-        power7200s.setText(m_powerIntervalSet.getText(6));
-
 
         // Call parent's onUpdate(dc) to redraw the layout
         View.onUpdate(dc);

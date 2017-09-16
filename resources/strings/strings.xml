@@ -1,6 +1,5 @@
 <strings>
     <string id="AppName">PowerField</string>
-    <string id="label">Hr/Power</string>
     <string id="AppVersionTitle">1.0.0</string>
     <string id="TimeTitle">Time Period</string>
     <string id="TimePrompt">Enter time period in seconds</string>

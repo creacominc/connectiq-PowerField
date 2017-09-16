@@ -63,9 +63,33 @@ class PowerIntervalSet
         }
     }
 
-    function getText(index)
+    function getText(indx)
     {
-        return m_powerIntervalSet[index].getText();
+        return m_powerIntervalSet[indx].getText();
     }
 
+    function getPeak(indx)
+    {
+        return m_powerIntervalSet[indx].getPeak();
+    }
+
+    function getAverage(indx)
+    {
+        return m_powerIntervalSet[indx].getAverage();
+    }
+
+    function getDuration(indx)
+    {
+        return m_powerIntervalSet[indx].getDuration();
+    }
+
+    function getDurationText(indx)
+    {
+        return m_powerIntervalSet[indx].getDurationText();
+    }
+
+    function getTarget(indx)
+    {
+        return m_powerIntervalSet[indx].getTarget();
+    }
 }

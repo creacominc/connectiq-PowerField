@@ -13,7 +13,6 @@ class PowerInterval
     protected var m_displayUnits;  // display 's' or 'm'
     protected var m_displayInterval;  // duration changed to minutes if needed
 
-
     function initialize( indx, greenAt )
     {
         var app = Application.getApp();
@@ -25,22 +24,27 @@ class PowerInterval
         m_lastTotal = 0;
         m_average = 0;
         m_peak = 0;
+        setDisplayUnits();
+        //System.println("created PowerInterval of " + m_target + "W for " + m_duration + "s.  green at " + m_greenAt + "W");
+    }
+
+    function setDisplayUnits()
+    {
         if(m_duration > 60*60)
         {
-                m_displayInterval = m_duration / 60.0 / 60.0;
-                m_displayUnits = "h";
-            }
-            else if(m_duration > 60)
-            {
-                m_displayInterval = m_duration / 60.0;
-                m_displayUnits = "m";
-            }
-            else
-            {
-                m_displayInterval = m_duration;
-                m_displayUnits = "s";
-            }
-        //System.println("created PowerInterval of " + m_target + "W for " + m_duration + "s.  green at " + m_greenAt + "W");
+            m_displayInterval = m_duration / 60.0 / 60.0;
+            m_displayUnits = "h";
+        }
+        else if(m_duration > 60)
+        {
+            m_displayInterval = m_duration / 60.0;
+            m_displayUnits = "m";
+        }
+        else
+        {
+            m_displayInterval = m_duration;
+            m_displayUnits = "s";
+        }
     }
 
     function getTarget()
@@ -51,6 +55,11 @@ class PowerInterval
     function getDuration()
     {
         return m_duration;
+    }
+
+    function getDurationText()
+    {
+        return m_displayInterval.format("%5.1f") + m_displayUnits;
     }
 
     function getAverage()
@@ -75,8 +84,12 @@ class PowerInterval
 
     function getText()
     {
-        return m_average.format("%4.0f") + "W  " + m_displayInterval.format("%3.1f") + m_displayUnits + "   " + m_peak.format("%4.0f")  + "W   " + m_target.format("%3.0f") + "W";
+        //return m_average.format("%4.0f") + "W  " + m_displayInterval.format("%3.1f") + m_displayUnits + "   " + m_peak.format("%4.0f")  + "W   " + m_target.format("%3.0f") + "W";
+        return ""
+             + m_displayInterval.format("%5.1f") + m_displayUnits + " "
+             + m_target.format("%3.0f") + "W "
+                     + m_average.format("%5.0f") + "W "
+             + m_peak.format("%5.0f")  + "W "
+           ;
     }
-
-
 }
