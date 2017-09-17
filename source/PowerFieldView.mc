@@ -15,6 +15,7 @@ class PowerFieldView extends Ui.DataField
     protected var m_hearts;
     protected var m_cadences;
     protected var m_elapsedTime;
+    protected var m_columnLocations = [25, 50, 75, 100];
 
     protected var m_powerIntervalSet;
 
@@ -25,6 +26,14 @@ class PowerFieldView extends Ui.DataField
         m_cadences = [0, 0, 0];
         m_elapsedTime = 0;
         m_powerIntervalSet = new PowerIntervalSet(NUM_FIELDS);
+        // get the screen width for placing items
+        var mySettings = System.getDeviceSettings();
+        var screenWidth = mySettings.screenWidth;
+        var columnWidth = screenWidth / 4;
+        m_columnLocations[0] = columnWidth;
+        m_columnLocations[1] = columnWidth * 2;
+        m_columnLocations[2] = columnWidth * 3;
+        m_columnLocations[3] = screenWidth;
     }
 
 
@@ -151,6 +160,15 @@ class PowerFieldView extends Ui.DataField
         cadence.setColor( (backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK );
         cadence.setText("c" + m_cadences[e_CUR].format("%d") + "/" + m_cadences[e_AVG].format("%d") + "/" + m_cadences[e_MAX].format("%d"));
 
+        // set title locations
+        var avgTitle = View.findDrawableById("avgTitle");
+        avgTitle.locX = m_columnLocations[0];
+        var durationTitle = View.findDrawableById("durationTitle");
+        durationTitle.locX = m_columnLocations[1];
+        var peakTitle = View.findDrawableById("peakTitle");
+        peakTitle.locX = m_columnLocations[2];
+        var targetTitle = View.findDrawableById("targetTitle");
+        targetTitle.locX = m_columnLocations[3];
 
         // populate fields
         var avgFields = new [NUM_FIELDS];
@@ -186,6 +204,12 @@ class PowerFieldView extends Ui.DataField
                     }
                 }
             }
+            // set location
+            avgFields[indx].locX = m_columnLocations[0];
+            durationFields[indx].locX = m_columnLocations[1];
+            peakFields[indx].locX = m_columnLocations[2];
+            targetFields[indx].locX = m_columnLocations[3];
+            // set colour
             avgFields[indx].setColor(fontColor);
             durationFields[indx].setColor(fontColor);
             peakFields[indx].setColor(fontColor);

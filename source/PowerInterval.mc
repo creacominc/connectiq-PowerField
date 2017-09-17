@@ -25,7 +25,7 @@ class PowerInterval
         m_average = 0;
         m_peak = 0;
         setDisplayUnits();
-        System.println("created PowerInterval of " + m_target + "W for " + m_duration + "s.  green at " + m_greenAt + "W");
+        //System.println("created PowerInterval of " + m_target + "W for " + m_duration + "s.  green at " + m_greenAt + "W");
     }
 
     function setDisplayUnits()
