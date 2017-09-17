@@ -92,4 +92,10 @@ class PowerIntervalSet
     {
         return m_powerIntervalSet[indx].getTarget();
     }
+
+    function getGreenAt(indx)
+    {
+        return m_powerIntervalSet[indx].getGreenAt();
+    }
+
 }

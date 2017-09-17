@@ -2,7 +2,8 @@
     <!-- A generic, centered layout. -->
     <layout id="MainLayout">
         <drawable class="Background" />
-        <label id="heart" x="center" y="0" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_CENTER" font="Gfx.FONT_MEDIUM" />
+        <label id="heart" x="left" y="0" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_LEFT" font="Gfx.FONT_SMALL" />
+        <label id="cadence" x="right" y="0" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_SMALL" />
 
         <label id="avgTitle" text="Avg" x="79" y="22" color="Gfx.COLOR_LT_GRAY" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_TINY" />
         <label id="avg0" x="79" y="40" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />

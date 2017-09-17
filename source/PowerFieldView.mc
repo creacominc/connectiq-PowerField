@@ -4,8 +4,16 @@ using Toybox.System;
 
 class PowerFieldView extends Ui.DataField
 {
+    protected const NUM_FIELDS = 7;
+    protected enum
+    {
+        e_CUR,
+        e_AVG,
+        e_MAX
+    }
     protected var m_TimerRunning = false;
-    protected var m_heart;
+    protected var m_hearts;
+    protected var m_cadences;
     protected var m_elapsedTime;
 
     protected var m_powerIntervalSet;
@@ -13,9 +21,10 @@ class PowerFieldView extends Ui.DataField
     function initialize()
     {
         DataField.initialize();
-        m_heart = 0.0f;
+        m_hearts = [0, 0, 0];
+        m_cadences = [0, 0, 0];
         m_elapsedTime = 0;
-        m_powerIntervalSet = new PowerIntervalSet(7);
+        m_powerIntervalSet = new PowerIntervalSet(NUM_FIELDS);
     }
 
 
@@ -91,11 +100,26 @@ class PowerFieldView extends Ui.DataField
             if(info.currentHeartRate != null)
             {
                 //System.println("in Compute Heart Rate: " + info.currentHeartRate);
-                m_heart = info.currentHeartRate;
+                m_hearts[e_CUR] = info.currentHeartRate;
+                m_hearts[e_AVG] = info.averageHeartRate;
+                m_hearts[e_MAX] = info.maxHeartRate;
             }
             else
             {
-                m_heart = 0.0f;
+                m_hearts = [0, 0, 0];
+            }
+        }
+        if(info has :currentCadence)
+        {
+            if(info.currentCadence != null)
+            {
+                m_cadences[e_CUR] = info.currentCadence;
+                m_cadences[e_AVG] = info.averageCadence;
+                m_cadences[e_MAX] = info.maxCadence;
+            }
+            else
+            {
+                m_cadences = [0, 0, 0];
             }
         }
         if(info has :currentPower)
@@ -122,35 +146,55 @@ class PowerFieldView extends Ui.DataField
         // Set the foreground color and value
         var heart = View.findDrawableById("heart");
         heart.setColor( (backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK );
-        heart.setText(m_heart.format("%.0f") + " bpm");
+        heart.setText(m_hearts[e_CUR].format("%d") + "/" + m_hearts[e_AVG].format("%d") + "/" + m_hearts[e_MAX].format("%d") + "h");
+        var cadence = View.findDrawableById("cadence");
+        cadence.setColor( (backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK );
+        cadence.setText("c" + m_cadences[e_CUR].format("%d") + "/" + m_cadences[e_AVG].format("%d") + "/" + m_cadences[e_MAX].format("%d"));
 
-        var fontColor = ( backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
 
         // populate fields
-        var avgFields = new [7];
-        var durationFields = new [7];
-        var peakFields = new [7];
-        var targetFields = new [7];
-        for( var indx = 0; indx < 7; indx++ )
+        var avgFields = new [NUM_FIELDS];
+        var durationFields = new [NUM_FIELDS];
+        var peakFields = new [NUM_FIELDS];
+        var targetFields = new [NUM_FIELDS];
+        for( var indx = 0; indx < NUM_FIELDS; indx++ )
         {
-                avgFields[indx]      = View.findDrawableById("avg" + indx);
-                durationFields[indx] = View.findDrawableById("duration" + indx);
-                peakFields[indx]     = View.findDrawableById("peak" + indx);
-                targetFields[indx]   = View.findDrawableById("target" + indx);
-                // set field to gray if the time has not expired
-                if( m_elapsedTime/1000 < m_powerIntervalSet.getDuration(indx) )
+            var fontColor = ( backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
+            avgFields[indx]      = View.findDrawableById("avg" + indx);
+            durationFields[indx] = View.findDrawableById("duration" + indx);
+            peakFields[indx]     = View.findDrawableById("peak" + indx);
+            targetFields[indx]   = View.findDrawableById("target" + indx);
+            // get the peak power once
+            var peak = m_powerIntervalSet.getPeak(indx);
+            // set field to gray if the time has not expired
+            if( m_elapsedTime/1000 < m_powerIntervalSet.getDuration(indx) )
+            {
+                //System.println("Elapsed: " + m_elapsedTime + ".  Duration(" +indx+ ") == " + m_powerIntervalSet.getDuration(indx));
+                fontColor = Gfx.COLOR_LT_GRAY;
+            }
+            else
+            {
+                if(peak > m_powerIntervalSet.getGreenAt(indx))
                 {
-                    //System.println("Elapsed: " + m_elapsedTime + ".  Duration(" +indx+ ") == " + m_powerIntervalSet.getDuration(indx));
-                    fontColor = Gfx.COLOR_LT_GRAY;
+                    if(peak > m_powerIntervalSet.getTarget(indx))
+                    {
+                        fontColor = Gfx.COLOR_BLUE;
+                    }
+                    else
+                    {
+                        fontColor = Gfx.COLOR_GREEN;
+                    }
                 }
-                avgFields[indx].setColor(fontColor);
-                durationFields[indx].setColor(fontColor);
-                peakFields[indx].setColor(fontColor);
-                targetFields[indx].setColor(fontColor);
-                avgFields[indx].setText(m_powerIntervalSet.getAverage(indx).toString() + "W");
-                durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
-                peakFields[indx].setText(m_powerIntervalSet.getPeak(indx).toString() + "W");
-                targetFields[indx].setText(m_powerIntervalSet.getTarget(indx).toString() + "W");
+            }
+            avgFields[indx].setColor(fontColor);
+            durationFields[indx].setColor(fontColor);
+            peakFields[indx].setColor(fontColor);
+            targetFields[indx].setColor(fontColor);
+            // set values
+            avgFields[indx].setText(m_powerIntervalSet.getAverage(indx).toString() + "W");
+            durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
+            peakFields[indx].setText(peak.toString() + "W");
+            targetFields[indx].setText(m_powerIntervalSet.getTarget(indx).toString() + "W");
         }
 
         // Call parent's onUpdate(dc) to redraw the layout
