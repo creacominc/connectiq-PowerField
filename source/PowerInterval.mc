@@ -16,10 +16,22 @@ class PowerInterval
     function initialize( indx, greenAt )
     {
         var app = Application.getApp();
-        var propertyName = "Time" + indx;
-        m_duration = app.getProperty(propertyName);
-        propertyName = "Target" + indx;
-        m_target = app.getProperty(propertyName);
+        m_duration = app.getProperty("Time" + indx);
+        // duration cannot be less than 2 seconds or greater than 2 hours
+        if(m_duration < 2)
+        {
+            m_duration = 2;
+        }
+        if(m_duration > 7200)
+        {
+            m_duration = 7200;
+        }
+        m_target = app.getProperty("Target" + indx);
+        // target power cannot be less than 2W
+        if(m_target < 2)
+        {
+            m_target = 2;
+        }
         m_greenAt = greenAt * m_target;
         m_lastTotal = 0;
         m_average = 0;
