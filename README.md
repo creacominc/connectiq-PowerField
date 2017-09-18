@@ -22,3 +22,9 @@ When using Best Bike Split or when trying to keep your Variability Index low, yo
 
 # Next Steps:
 This only works on a few devices that have sufficient memory.  I would like it to work on the Vivoactive HR, the Forerunner 920XT, and the Fenix 5x but testing with the simulator shows that it exceeds the memory limits. If I can reduce the memory usage and improve the efficiency, I will enable these devices.
+
+TBD:  To reduce the memory footprint (after I test it on other devices), I will reduce the precision and the memory used by having three storage arrays.  A per-second array for the last 120 seconds, grouping data into 30 second chunks and storing in a second array for 5 and 20 minute averages, and grouping them in 5 minute chunks into another array for the 1 and two hour averages.  This should reduce the data from 7200 entries to 184.  This will mean losing the option for the user to configure the time periods as they need to be multiples of 1 second for up to 120 seconds, 30 seconds for up to 20 minutes, and multiples of 5 minutes for any longer times.  I could generate the list of usable values but it is probably simpler to just fix them at 3s, 30s, 2mins, 5mins, 20mins, 1hr, and 2hr.
+
+TBD:  Remove the decimal place on the time.
+
+
