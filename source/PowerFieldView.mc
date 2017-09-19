@@ -178,10 +178,14 @@ class PowerFieldView extends Ui.DataField
         for( var indx = 0; indx < NUM_FIELDS; indx++ )
         {
             var fontColor = ( backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
+            var avgColor = fontColor;
+            var peakColor = avgColor;
             avgFields[indx]      = View.findDrawableById("avg" + indx);
             durationFields[indx] = View.findDrawableById("duration" + indx);
             peakFields[indx]     = View.findDrawableById("peak" + indx);
             targetFields[indx]   = View.findDrawableById("target" + indx);
+            // get the avg power once
+            var avg = m_powerIntervalSet.getAverage(indx);
             // get the peak power once
             var peak = m_powerIntervalSet.getPeak(indx);
             // set field to gray if the time has not expired
@@ -189,18 +193,33 @@ class PowerFieldView extends Ui.DataField
             {
                 //System.println("Elapsed: " + m_elapsedTime + ".  Duration(" +indx+ ") == " + m_powerIntervalSet.getDuration(indx));
                 fontColor = Gfx.COLOR_LT_GRAY;
+                avgColor = fontColor;
+                peakColor = fontColor;
             }
             else
             {
-                if(peak > m_powerIntervalSet.getGreenAt(indx))
+                var greenAt = m_powerIntervalSet.getGreenAt(indx);
+                var target  = m_powerIntervalSet.getTarget(indx);
+                if(avg > greenAt)
                 {
-                    if(peak > m_powerIntervalSet.getTarget(indx))
+                    if(avg > target)
                     {
-                        fontColor = Gfx.COLOR_BLUE;
+                        avgColor = Gfx.COLOR_BLUE;
                     }
                     else
                     {
-                        fontColor = Gfx.COLOR_GREEN;
+                        avgColor = Gfx.COLOR_GREEN;
+                    }
+                }
+                if(peak > greenAt)
+                {
+                    if(peak > target)
+                    {
+                        peakColor = Gfx.COLOR_BLUE;
+                    }
+                    else
+                    {
+                        peakColor = Gfx.COLOR_GREEN;
                     }
                 }
             }
@@ -210,12 +229,12 @@ class PowerFieldView extends Ui.DataField
             peakFields[indx].locX = m_columnLocations[2];
             targetFields[indx].locX = m_columnLocations[3];
             // set colour
-            avgFields[indx].setColor(fontColor);
+            avgFields[indx].setColor(avgColor);
             durationFields[indx].setColor(fontColor);
-            peakFields[indx].setColor(fontColor);
+            peakFields[indx].setColor(peakColor);
             targetFields[indx].setColor(fontColor);
             // set values
-            avgFields[indx].setText(m_powerIntervalSet.getAverage(indx).toString() + "W");
+            avgFields[indx].setText(avg.toString() + "W");
             durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
             peakFields[indx].setText(peak.toString() + "W");
             targetFields[indx].setText(m_powerIntervalSet.getTarget(indx).toString() + "W");

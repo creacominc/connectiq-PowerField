@@ -44,12 +44,12 @@ class PowerInterval
     {
         if(m_duration > 60*60)
         {
-            m_displayInterval = m_duration / 60.0 / 60.0;
+            m_displayInterval = m_duration / 60 / 60;
             m_displayUnits = "h";
         }
         else if(m_duration > 60)
         {
-            m_displayInterval = m_duration / 60.0;
+            m_displayInterval = m_duration / 60;
             m_displayUnits = "m";
         }
         else
@@ -76,7 +76,7 @@ class PowerInterval
 
     function getDurationText()
     {
-        return m_displayInterval.format("%5.1f") + m_displayUnits;
+        return m_displayInterval.toString() + m_displayUnits;
     }
 
     function getAverage()
