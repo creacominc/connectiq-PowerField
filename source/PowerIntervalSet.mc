@@ -55,11 +55,9 @@ class PowerIntervalSet
         }
         // update all the Intervals
         var numberOfSets = m_powerIntervalSet.size();
-        var insertLocation = m_insertHead;
         for(var indx = 0; indx < numberOfSets; indx++)
         {
-            var extractLocation = insertLocation - m_powerIntervalSet[indx].getDuration();
-            m_powerIntervalSet[indx].update(insertLocation, extractLocation, m_numbers);
+            m_powerIntervalSet[indx].update(m_insertHead, m_numbers);
         }
     }
 

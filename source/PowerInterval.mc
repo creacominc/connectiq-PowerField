@@ -5,6 +5,7 @@
 class PowerInterval
 {
     protected var m_duration;  // seconds to count
+    protected var m_fullTimeElapsed; // true once the full duration has elapsed once.
     protected var m_target;    // power target set by the user
     protected var m_greenAt;   // the power above which the indicator should turn green.
     protected var m_lastTotal;
@@ -26,6 +27,7 @@ class PowerInterval
         {
             m_duration = 7200;
         }
+        m_fullTimeElapsed = false;
         m_target = app.getProperty("Target" + indx);
         // target power cannot be less than 2W
         if(m_target < 2)
@@ -89,10 +91,25 @@ class PowerInterval
         return m_peak;
     }
 
-    function update(curHeadIndex, curTailIndex, numbers)
+    function update(curHeadIndex, numbers)
     {
+        var curTailIndex = curHeadIndex - m_duration;
+        // if the time has elapsed, curTailIndex will be greater than -1.
+        if(curTailIndex >= 0)
+        {
+            m_fullTimeElapsed = true;
+        }
+        else
+        {
+            // when the head has wrapped around and the time has elapsed, we need to wrap around
+            if(m_fullTimeElapsed)
+            {
+                curTailIndex = numbers.size() + curTailIndex;
+                /** @TODO:  verify this calculation. */
+            }
+        }
         m_lastTotal = m_lastTotal - ( curTailIndex >= 0 ? numbers[curTailIndex] : 0 ) + numbers[curHeadIndex];
-        m_average = m_lastTotal / m_duration;
+        m_average = m_lastTotal / ( m_fullTimeElapsed ? m_duration : curHeadIndex + 1 );
         if( m_peak < m_average )
         {
             m_peak = m_average;

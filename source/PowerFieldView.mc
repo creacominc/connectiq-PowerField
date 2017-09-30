@@ -204,22 +204,22 @@ class PowerFieldView extends Ui.DataField
                 {
                     if(avg > target)
                     {
-                        avgColor = Gfx.COLOR_BLUE;
+                        avgColor = ( backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_BLUE : Gfx.COLOR_DK_BLUE;
                     }
                     else
                     {
-                        avgColor = Gfx.COLOR_GREEN;
+                        avgColor = ( backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_YELLOW : Gfx.COLOR_ORANGE;
                     }
                 }
                 if(peak > greenAt)
                 {
                     if(peak > target)
                     {
-                        peakColor = Gfx.COLOR_BLUE;
+                        peakColor = ( backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_BLUE : Gfx.COLOR_DK_BLUE;
                     }
                     else
                     {
-                        peakColor = Gfx.COLOR_GREEN;
+                        peakColor = ( backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_YELLOW : Gfx.COLOR_ORANGE;
                     }
                 }
             }
