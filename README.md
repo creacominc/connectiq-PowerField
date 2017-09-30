@@ -31,6 +31,6 @@ Done:  change the colours to avoid green and red and to provide a dark colour wh
 
 Done:  Change the average computation for unexpired times so that they reflect the average and peak power so far.
 
-
+TBD:  add unit tests for times in excess of the upper limit.
 
 
