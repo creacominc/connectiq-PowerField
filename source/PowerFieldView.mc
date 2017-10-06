@@ -11,6 +11,7 @@ class PowerFieldView extends Ui.DataField
         e_AVG,
         e_MAX
     }
+    protected const CADENCE_LIMIT = 160;
     protected var m_TimerRunning = false;
     protected var m_hearts;
     protected var m_cadences;
@@ -122,9 +123,9 @@ class PowerFieldView extends Ui.DataField
         {
             if(info.currentCadence != null)
             {
-                m_cadences[e_CUR] = info.currentCadence;
-                m_cadences[e_AVG] = info.averageCadence;
-                m_cadences[e_MAX] = info.maxCadence;
+                if(info.currentCadence < CADENCE_LIMIT) { m_cadences[e_CUR] = info.currentCadence; }
+                if(info.averageCadence < CADENCE_LIMIT) { m_cadences[e_AVG] = info.averageCadence; }
+                if(info.maxCadence < CADENCE_LIMIT) { m_cadences[e_MAX] = info.maxCadence; }
             }
             else
             {
@@ -188,8 +189,10 @@ class PowerFieldView extends Ui.DataField
             var avg = m_powerIntervalSet.getAverage(indx);
             // get the peak power once
             var peak = m_powerIntervalSet.getPeak(indx);
+            // local copy of elapsed time
+            var elapsedTime = m_elapsedTime/1000;
             // set field to gray if the time has not expired
-            if( m_elapsedTime/1000 < m_powerIntervalSet.getDuration(indx) )
+            if( elapsedTime < m_powerIntervalSet.getDuration(indx) )
             {
                 //System.println("Elapsed: " + m_elapsedTime + ".  Duration(" +indx+ ") == " + m_powerIntervalSet.getDuration(indx));
                 fontColor = Gfx.COLOR_LT_GRAY;
@@ -234,9 +237,17 @@ class PowerFieldView extends Ui.DataField
             peakFields[indx].setColor(peakColor);
             targetFields[indx].setColor(fontColor);
             // set values
-            avgFields[indx].setText(avg.toString() + "W");
+            if( (indx==0) || ((elapsedTime > m_powerIntervalSet.getDuration(indx-1))) )
+            {
+                avgFields[indx].setText(avg.toString() + "W");
+                peakFields[indx].setText(peak.toString() + "W");
+            }
+            else
+            {
+                avgFields[indx].setText("");
+                peakFields[indx].setText("");
+            }
             durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
-            peakFields[indx].setText(peak.toString() + "W");
             targetFields[indx].setText(m_powerIntervalSet.getTarget(indx).toString() + "W");
         }
 
