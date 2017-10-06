@@ -105,7 +105,6 @@ class PowerInterval
             if(m_fullTimeElapsed)
             {
                 curTailIndex = numbers.size() + curTailIndex;
-                /** @TODO:  verify this calculation. */
             }
         }
         m_lastTotal = m_lastTotal - ( curTailIndex >= 0 ? numbers[curTailIndex] : 0 ) + numbers[curHeadIndex];

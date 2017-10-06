@@ -34,7 +34,7 @@ class PowerIntervalSet
         var curSize = m_numbers.size();
         if( (m_insertHead == (curSize - 1)) || (m_insertHead == (m_insertTail - 1)) )
         {
-            numbers[m_insertTail] = currentPower;
+            m_numbers[m_insertTail] = currentPower;
             // rotate pointers
             m_insertHead = m_insertTail;
             m_insertTail += 1;
