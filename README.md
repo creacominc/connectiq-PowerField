@@ -38,6 +38,10 @@ Done:  change the colours to avoid green and red and to provide a dark colour wh
 
 Done:  Change the average computation for unexpired times so that they reflect the average and peak power so far.
 
+Done:  Fixed a bug that caused the app to crash when the maximum time elapsed.
+
+Done:  Only display the average for a time period that has passed or the overall average for a time period that is next to be passed.  For example, if the time periods are 5 and 20 minutes, until 5 minutes has passed, do not show the overall average on the 20 minute line.  Once the 5 minutes has passed and is showing the last 5 minutes, the 20 minute line can show the overall average time until 20 minutes passes.
+
 TBD:  add unit tests for times in excess of the upper limit.
 
 
