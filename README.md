@@ -8,7 +8,7 @@ A data field for Edge devices that shows heart rate, cadence, and 7 average powe
 When using Best Bike Split or when trying to keep your Variability Index low, you need to target a power level and hold to it.  The end goal of this screen will be to show the key metrics needed while riding with the goal of "constant power over varying terrain".
 
 # Resources:
-- The field can be downloaded from https://apps.garmin.com/en-US/apps/a...9-f64e3fc4add4
+- The field can be downloaded from https://apps.garmin.com/en-US/apps/ae433c7a-d706-4f80-8e29-f64e3fc4add4
 - The source code can be seen at https://github.com/creacominc/connectiq-PowerField
 - Unit tests for the field are at https://github.com/creacominc/connectiq-PowerFieldTests
 - Comments, suggestions, and feedback are welcome and can be entered in the Garmin Forum at: https://forums.garmin.com/forum/developers/connect-iq/connect-iq-showcase/1253838-powerfield-comments-questions-and-suggestions-welcomed
