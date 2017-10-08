@@ -61,11 +61,6 @@ class PowerIntervalSet
         }
     }
 
-    function getText(indx)
-    {
-        return m_powerIntervalSet[indx].getText();
-    }
-
     function getPeak(indx)
     {
         return m_powerIntervalSet[indx].getPeak();

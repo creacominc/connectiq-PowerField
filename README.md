@@ -44,4 +44,6 @@ Done:  Only display the average for a time period that has passed or the overall
 
 TBD:  add unit tests for times in excess of the upper limit.
 
+TBD:  Add configuration options for the colours and for showing large vs small font layout.
+
 
