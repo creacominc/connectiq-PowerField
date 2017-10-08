@@ -10,7 +10,7 @@ class PowerIntervalSet
 
     function initialize(numberOfFields)
     {
-        var largestIntervalInSeconds = 0;
+        var largestIntervalInSeconds = 4;  // minimum storage will be 4 seconds
         var greenAt = 0.80;  // turn green at 80% of the target... @TODO move this to a resource.
         for( var indx = 0; indx < numberOfFields; indx++ )
         {
@@ -24,7 +24,7 @@ class PowerIntervalSet
             }
         }
         //System.println("creating number array of size: " + largestIntervalInSeconds);
-        m_numbers = new [ largestIntervalInSeconds ];
+        m_numbers = new [ largestIntervalInSeconds + 1 ];
     }
 
     function update(currentPower)
@@ -45,7 +45,7 @@ class PowerIntervalSet
         }
         else
         {
-            // the list is not full, just add the new entry and update the total.
+            // the list is not full, just add the new entry.
             if(m_insertTail==-1)
             {
                 m_insertTail = 0;

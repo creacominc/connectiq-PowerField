@@ -107,19 +107,19 @@ class PowerInterval
     {
         var curTailIndex = curHeadIndex - m_duration;
         //System.println("curTailIndex="+curTailIndex);
-        // if the time has elapsed, curTailIndex will be greater than -1.
-        if(curTailIndex >= 0)
+        // when the head has wrapped around and the time has elapsed, we need to wrap around
+        if(m_fullTimeElapsed  && (curTailIndex < 0))
         {
-            m_fullTimeElapsed = true;
-            //System.println("m_fullTimeElapsed is set");
+            curTailIndex = numbers.size() + curTailIndex;
+            //System.println("time elapsed, tail="+curTailIndex);
         }
         else
         {
-            // when the head has wrapped around and the time has elapsed, we need to wrap around
-            if(m_fullTimeElapsed)
+            // if the time has elapsed, curTailIndex will be greater than -1.
+            if(curHeadIndex >= (m_duration-1))
             {
-                curTailIndex = numbers.size() + curTailIndex;
-                //System.println("time elapsed, tail="+curTailIndex);
+                m_fullTimeElapsed = true;
+                //System.println("m_fullTimeElapsed is set");
             }
         }
         m_lastTotal = m_lastTotal - ( curTailIndex >= 0 ? numbers[curTailIndex] : 0 ) + numbers[curHeadIndex];
