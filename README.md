@@ -8,10 +8,10 @@ A data field for Edge devices that shows heart rate, cadence, and 7 average powe
 When using Best Bike Split or when trying to keep your Variability Index low, you need to target a power level and hold to it.  The end goal of this screen will be to show the key metrics needed while riding with the goal of "constant power over varying terrain".
 
 # Resources:
-The field can be downloaded from https://apps.garmin.com/en-US/apps/a...9-f64e3fc4add4
-The source code can be seen at https://github.com/creacominc/connectiq-PowerField
-Unit tests for the field are at https://github.com/creacominc/connectiq-PowerFieldTests
-Comments, suggestions, and feedback are welcome and can be entered in the Garmin Forum at: https://forums.garmin.com/forum/developers/connect-iq/connect-iq-showcase/1253838-powerfield-comments-questions-and-suggestions-welcomed
+- The field can be downloaded from https://apps.garmin.com/en-US/apps/a...9-f64e3fc4add4
+- The source code can be seen at https://github.com/creacominc/connectiq-PowerField
+- Unit tests for the field are at https://github.com/creacominc/connectiq-PowerFieldTests
+- Comments, suggestions, and feedback are welcome and can be entered in the Garmin Forum at: https://forums.garmin.com/forum/developers/connect-iq/connect-iq-showcase/1253838-powerfield-comments-questions-and-suggestions-welcomed
 
 
 # Build Phases:
@@ -42,7 +42,7 @@ Done:  Fixed a bug that caused the app to crash when the maximum time elapsed.
 
 Done:  Only display the average for a time period that has passed or the overall average for a time period that is next to be passed.  For example, if the time periods are 5 and 20 minutes, until 5 minutes has passed, do not show the overall average on the 20 minute line.  Once the 5 minutes has passed and is showing the last 5 minutes, the 20 minute line can show the overall average time until 20 minutes passes.
 
-TBD:  add unit tests for times in excess of the upper limit.
+Done:  add unit tests for times in excess of the upper limit.  Also fixed the issue that caused the average to be incorrect when the max time exceeded.
 
 TBD:  Add configuration options for the colours and for showing large vs small font layout.
 
