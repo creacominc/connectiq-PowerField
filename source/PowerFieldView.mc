@@ -141,8 +141,8 @@ class PowerFieldView extends Ui.DataField
         }
         if(info has :elapsedTime)
         {
-                m_elapsedTime = info.elapsedTime;
-            }
+            m_elapsedTime = info.elapsedTime;
+        }
     }
 
     // Display the value you computed here. This will be called
