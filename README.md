@@ -1,4 +1,4 @@
-![Build Status](https://travis-ci.org/creacominc/connectiq-PowerField.svg?branch=master)](https://travis-ci.org/creacominc/connectiq-PowerField)
+![Build Status](https://travis-ci.org/creacominc/connectiq-PowerField.svg?branch=master)
 
 
 # connectiq-PowerField
