@@ -1,3 +1,6 @@
+![Build Status](https://travis-ci.org/creacominc/connectiq-PowerField.svg?branch=master)](https://travis-ci.org/creacominc/connectiq-PowerField)
+
+
 # connectiq-PowerField
 A data field for Edge devices that shows heart rate, cadence, and 7 average power values, peaks, and targets.
 
