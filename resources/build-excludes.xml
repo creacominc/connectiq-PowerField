@@ -1,8 +1,0 @@
-<build>
-	<!--  <exclude dir="../source/PowerFieldTests.mc" />  -->
-	<!-- 
-	<exclude dir="../source/ProjectUnderTest" />
-	<exclude dir="../source/ProjectUnderTest/source" />
-	<exclude file="../source/ProjectUnderTest/source/PowerInterval.mc" />
-	 -->
-</build>
