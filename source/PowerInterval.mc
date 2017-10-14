@@ -116,15 +116,16 @@ class PowerInterval
         else
         {
             // if the time has elapsed, curTailIndex will be greater than -1.
-            if(curHeadIndex >= (m_duration-1))
+            if((! m_fullTimeElapsed) && (curHeadIndex >= (m_duration-1)))
             {
                 m_fullTimeElapsed = true;
-                //System.println("m_fullTimeElapsed is set");
+                m_peak = m_average;
+                System.println("m_fullTimeElapsed is set for " + m_duration + "  average=" + m_average);
             }
         }
         m_lastTotal = m_lastTotal - ( curTailIndex >= 0 ? numbers[curTailIndex] : 0 ) + numbers[curHeadIndex];
         m_average = m_lastTotal / ( m_fullTimeElapsed ? m_duration : curHeadIndex + 1 );
-        if( m_peak < m_average )
+        if(m_peak < m_average)
         {
             m_peak = m_average;
         }

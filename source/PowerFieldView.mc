@@ -59,9 +59,6 @@ class PowerFieldView extends Ui.DataField
     {
     }
 
-
-
-
     // Set your layout here. Anytime the size of obscurity of
     // the draw context is changed this will be called.
     function onLayout(dc)
@@ -198,6 +195,8 @@ class PowerFieldView extends Ui.DataField
                 fontColor = Gfx.COLOR_LT_GRAY;
                 avgColor = fontColor;
                 peakColor = fontColor;
+                // until the time expires, set the peak to the average
+                //peak = avg;
             }
             else
             {
@@ -237,18 +236,27 @@ class PowerFieldView extends Ui.DataField
             peakFields[indx].setColor(peakColor);
             targetFields[indx].setColor(fontColor);
             // set values
-            if( (indx==0) || ((elapsedTime > m_powerIntervalSet.getDuration(indx-1))) )
+            if( (indx==0) || (elapsedTime > m_powerIntervalSet.getDuration(indx-1)) )
             {
                 avgFields[indx].setText(avg.toString() + "W");
-                peakFields[indx].setText(peak.toString() + "W");
+                if(elapsedTime <= m_powerIntervalSet.getDuration(indx))
+                {
+                    durationFields[indx].setText("<" + m_powerIntervalSet.getDurationText(indx));
+                }
+                else
+                {
+                    peakFields[indx].setText(peak.toString() + "W");
+                    durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
+                }
+                //System.println("duration field: " + (((elapsedTime < m_powerIntervalSet.getDuration(indx)) ? "<" : "") + m_powerIntervalSet.getDurationText(indx).toString()));
             }
             else
             {
                 avgFields[indx].setText("");
                 peakFields[indx].setText("");
+                durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
             }
-            durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
-            targetFields[indx].setText(m_powerIntervalSet.getTarget(indx).toString() + "W");
+            targetFields[indx].setText( m_powerIntervalSet.getTarget(indx).toString() + "W");
         }
 
         // Call parent's onUpdate(dc) to redraw the layout
