@@ -195,8 +195,6 @@ class PowerFieldView extends Ui.DataField
                 fontColor = Gfx.COLOR_LT_GRAY;
                 avgColor = fontColor;
                 peakColor = fontColor;
-                // until the time expires, set the peak to the average
-                //peak = avg;
             }
             else
             {
