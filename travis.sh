@@ -141,8 +141,8 @@ cd ${PROJECT_HOME}
 for TARGET_DEVICE in ${TARGET_DEVICES}
 do
 	echo "Target Device: ${TARGET_DEVICE}"
-	start_simulator
-	sleep 2
+	#start_simulator
+	#sleep 2
 	PARAMS=""
     concat_params_for_package
 	#concat_params_for_build
