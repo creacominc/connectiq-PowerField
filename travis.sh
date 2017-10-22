@@ -1,6 +1,14 @@
 #!/bin/bash
 # travis.sh script to
 
+RESOURCES_FOLDER="resources"
+SOURCE_FOLDER="source"
+
+APP_NAME="PowerFieldTests"
+TARGET_DEVICES="edge_1000 edge_1030 edge820"
+TARGET_SDK_VERSION="2.3.0"
+
+
 SDK_URL="https://developer.garmin.com/downloads/connect-iq/sdks/connectiq-sdk-win-2.3.4.zip"
 SDK_FILE="sdk.zip"
 SDK_DIR="sdk"
@@ -19,29 +27,14 @@ openssl pkcs8 -topk8 -inform PEM -outform DER -in "${PEM_FILE}" -out "${DER_FILE
 export MB_HOME="${SDK_DIR}"
 export MB_PRIVATE_KEY="${DER_FILE}"
 
-# mb_runner needs to know where the resource folder is.
-#./mb_runner/mb_runner.sh test `pwd` source/connectiq-PowerField/resources
-
-#
-# from mb_runner
-#
-
 PROJECT_HOME="${PWD}"
-RESOURCES_FOLDER="resources"
-SOURCE_FOLDER="source"
-
-#CONFIG_FILE="${PROJECT_HOME}/mb_runner.cfg"
-APP_NAME="PowerFieldTests"
-TARGET_DEVICES="edge_1000 edge_1030 edge820"
-TARGET_SDK_VERSION="2.3.0"
-
 MANIFEST_FILE="${PROJECT_HOME}/manifest.xml"
 
 
 RESOURCES="`cd /; find \"${PROJECT_HOME}/${RESOURCES_FOLDER}\"* -iname '*.xml' | tr '\n' ':'`"
-#SOURCES="`cd /; find \"${PROJECT_HOME}/${SOURCE_FOLDER}\" -iname '*.mc' | tr '\n' ' '`"
+SOURCES="`cd /; find \"${PROJECT_HOME}/${SOURCE_FOLDER}\" -iname '*.mc' | tr '\n' ' '`"
 #SOURCES=`ls -1 ${PROJECT_HOME}/${SOURCE_FOLDER}/*.mc ${PROJECT_HOME}/${SOURCE_FOLDER}/Mocks/*.mc ${PROJECT_HOME}/${SOURCE_FOLDER}/connectiq-PowerField/source/*.mc | grep -v PowerFieldApp.mc`
-SOURCES=`ls -1 ${PROJECT_HOME}/${SOURCE_FOLDER}/*.mc`
+#SOURCES=`ls -1 ${PROJECT_HOME}/${SOURCE_FOLDER}/*.mc`
 
 API_DB="${MB_HOME}/bin/api.db"
 PROJECT_INFO="${MB_HOME}/bin/projectInfo.xml"
