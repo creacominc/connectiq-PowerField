@@ -27,7 +27,7 @@ export MB_PRIVATE_KEY="${DER_FILE}"
 #
 
 PROJECT_HOME="${PWD}"
-RESOURCES_FOLDER="source/connectiq-PowerField/resources"
+RESOURCES_FOLDER="resources"
 SOURCE_FOLDER="source"
 
 #CONFIG_FILE="${PROJECT_HOME}/mb_runner.cfg"
