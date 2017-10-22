@@ -1,17 +1,17 @@
 <properties>
-	<property id="NumberOfFields" type="number">1</property>
+	<property id="NumberOfFields" type="number">7</property>
     <property id="Time0" type="number">3</property>
-    <property id="Target0" type="number">923</property>
+    <property id="Target0" type="number">908</property>
     <property id="Time1" type="number">30</property>
-    <property id="Target1" type="number">549</property>
+    <property id="Target1" type="number">577</property>
     <property id="Time2" type="number">60</property>
-    <property id="Target2" type="number">431</property>
-    <property id="Time3" type="number">240</property>
-    <property id="Target3" type="number">283</property>
+    <property id="Target2" type="number">401</property>
+    <property id="Time3" type="number">300</property>
+    <property id="Target3" type="number">401</property>
     <property id="Time4" type="number">1200</property>
-    <property id="Target4" type="number">236</property>
+    <property id="Target4" type="number">248</property>
     <property id="Time5" type="number">3600</property>
-    <property id="Target5" type="number">184</property>
+    <property id="Target5" type="number">203</property>
     <property id="Time6" type="number">7200</property>
-    <property id="Target6" type="number">152</property>
+    <property id="Target6" type="number">170</property>
 </properties>

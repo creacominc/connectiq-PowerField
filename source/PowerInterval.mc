@@ -152,6 +152,7 @@ class PowerInterval
             if((m_peak < m_average) || !m_fullTimeElapsed)
             {
                 m_peak = m_average;
+                //System.println("Peak set.  total(" + m_duration + ") ="+m_lastTotal+",  average="+m_average+",  peak="+m_peak + ",  timeElapsed=" + m_fullTimeElapsed);
             }
             //System.println("total(" + m_duration + ") ="+m_lastTotal+",  average="+m_average+",  peak="+m_peak + ",  timeElapsed=" + m_fullTimeElapsed);
         }
