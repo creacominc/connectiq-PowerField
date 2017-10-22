@@ -145,11 +145,11 @@ do
 	sleep 2
 	PARAMS=""
     concat_params_for_package
-	//concat_params_for_build
+	#concat_params_for_build
 	run_mb_jar
-	//ps -ef | grep simulator
-	//run_tests
+	#ps -ef | grep simulator
+	#run_tests
 	echo "=============="
-	//sleep 2
+	#sleep 2
 done
 
