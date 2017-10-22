@@ -1,4 +1,5 @@
 <properties>
+	<property id="NumberOfFields" type="number">1</property>
     <property id="Time0" type="number">3</property>
     <property id="Target0" type="number">923</property>
     <property id="Time1" type="number">30</property>
