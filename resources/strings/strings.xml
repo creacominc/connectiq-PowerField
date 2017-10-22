@@ -1,6 +1,6 @@
 <strings>
     <string id="AppName">PowerField</string>
-    <string id="AppVersionTitle">1.0.3</string>
+    <string id="AppVersionTitle">1.0.4</string>
     <string id="NumberOfFieldsTitle">Number of Fields</string>
     <string id="NumberOfFieldsPrompt">Enter the number of fields to display (up to 7)</string>
     <string id="NumberOfFieldsError">Invalid number of fields</string>
