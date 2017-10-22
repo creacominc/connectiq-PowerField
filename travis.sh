@@ -40,8 +40,8 @@ MANIFEST_FILE="${PROJECT_HOME}/manifest.xml"
 
 RESOURCES="`cd /; find \"${PROJECT_HOME}/${RESOURCES_FOLDER}\"* -iname '*.xml' | tr '\n' ':'`"
 #SOURCES="`cd /; find \"${PROJECT_HOME}/${SOURCE_FOLDER}\" -iname '*.mc' | tr '\n' ' '`"
-SOURCES=`ls -1 ${PROJECT_HOME}/${SOURCE_FOLDER}/*.mc ${PROJECT_HOME}/${SOURCE_FOLDER}/Mocks/*.mc ${PROJECT_HOME}/${SOURCE_FOLDER}/connectiq-PowerField/source/*.mc | grep -v PowerFieldApp.mc`
-
+#SOURCES=`ls -1 ${PROJECT_HOME}/${SOURCE_FOLDER}/*.mc ${PROJECT_HOME}/${SOURCE_FOLDER}/Mocks/*.mc ${PROJECT_HOME}/${SOURCE_FOLDER}/connectiq-PowerField/source/*.mc | grep -v PowerFieldApp.mc`
+SOURCES=`ls -1 ${PROJECT_HOME}/${SOURCE_FOLDER}/*.mc`
 
 API_DB="${MB_HOME}/bin/api.db"
 PROJECT_INFO="${MB_HOME}/bin/projectInfo.xml"
