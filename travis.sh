@@ -129,14 +129,17 @@ function run_mb_jar
 {
 	echo "java -Dfile.encoding=UTF-8 -Dapple.awt.UIElement=true  -jar \"${MB_HOME}/bin/monkeybrains.jar\" ${PARAMS} ${SOURCES}"
     java -Dfile.encoding=UTF-8 -Dapple.awt.UIElement=true  -jar "${MB_HOME}/bin/monkeybrains.jar" ${PARAMS} ${SOURCES}
+    return $?
 }
 
 function run_tests
 {
 	echo "\"${MB_HOME}/bin/monkeydo\" \"${PROJECT_HOME}/${APP_NAME}.prg\" ${TARGET_DEVICE} -t"
     "${MB_HOME}/bin/monkeydo" "${PROJECT_HOME}/${APP_NAME}.prg" ${TARGET_DEVICE} -t
+    return $?
 }
 
+exitCode=0
 cd ${PROJECT_HOME}
 for TARGET_DEVICE in ${TARGET_DEVICES}
 do
@@ -147,9 +150,11 @@ do
     concat_params_for_package
 	#concat_params_for_build
 	run_mb_jar
+	exitCode=$?
+	echo "============== $exitCode"
 	#ps -ef | grep simulator
 	#run_tests
-	echo "=============="
 	#sleep 2
 done
 
+exit $exitCode
