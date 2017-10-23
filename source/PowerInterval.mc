@@ -25,7 +25,7 @@ class PowerInterval
         }
         catch(ex)
         {
-            System.println("Exception caught getting the Time" + indx + " property.  Error=" + ex.getErrorMessage());
+            System.println("PowerField/Exception caught getting the Time" + indx + " property.  Error=" + ex.getErrorMessage());
             ex.printStackTrace();
             m_duration = 0;
         }
@@ -46,7 +46,7 @@ class PowerInterval
         }
         catch(ex)
         {
-            //System.println("Exception caught getting the Target" + indx + " property.  Error=" + ex.getErrorMessage());
+            System.println("PowerField/Exception caught getting the Target" + indx + " property.  Error=" + ex.getErrorMessage());
             ex.printStackTrace();
             m_target = 0;
         }
@@ -158,7 +158,7 @@ class PowerInterval
         }
         catch(ex)
         {
-            //System.println("Exception caught in PowerInterval::update(" + m_duration + ")  at index=" + curHeadIndex + ".  Exception=" + ex.getErrorMessage());
+            System.println("PowerField/Exception caught in PowerInterval::update(" + m_duration + ")  at index=" + curHeadIndex + ".  Exception=" + ex.getErrorMessage());
             ex.printStackTrace();
         }
     }

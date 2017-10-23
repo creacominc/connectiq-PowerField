@@ -25,16 +25,16 @@ class PowerFieldView extends Ui.DataField
         DataField.initialize();
         try
         {
-	        var app = Application.getApp();
-	        NUM_FIELDS = app.getProperty("NumberOfFields");
-	        if((NUM_FIELDS<1) || (NUM_FIELDS>7))
-	        {
-				NUM_FIELDS = 7;
-			}
-		}
+            var app = Application.getApp();
+            NUM_FIELDS = app.getProperty("NumberOfFields");
+            if((NUM_FIELDS<1) || (NUM_FIELDS>7))
+            {
+                NUM_FIELDS = 7;
+            }
+        }
         catch(ex)
         {
-            System.println("Exception caught getting number of fields.  error=" + ex.getErrorMessage());
+            System.println("PowerField/Exception caught getting number of fields.  error=" + ex.getErrorMessage());
             ex.printStackTrace();
             NUM_FIELDS = 7;
         }
@@ -165,7 +165,7 @@ class PowerFieldView extends Ui.DataField
         }
         catch(ex)
         {
-            System.println("Exception caught in PowerFieldView::compute.  error=" + ex.getErrorMessage());
+            System.println("PowerField/Exception caught in PowerFieldView::compute.  error=" + ex.getErrorMessage());
             ex.printStackTrace();
         }
     }
@@ -292,7 +292,7 @@ class PowerFieldView extends Ui.DataField
         }
         catch(ex)
         {
-            System.println("Exception caught in PowerFieldView::onUpdate.  error=" + ex.getErrorMessage());
+            System.println("PowerField/Exception caught in PowerFieldView::onUpdate.  error=" + ex.getErrorMessage());
             ex.printStackTrace();
         }
     }
