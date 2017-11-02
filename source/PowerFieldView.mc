@@ -1,6 +1,7 @@
 using Toybox.WatchUi as Ui;
 using Toybox.Graphics as Gfx;
 using Toybox.System;
+using Toybox.Lang;
 
 class PowerFieldView extends Ui.DataField
 {
@@ -19,6 +20,7 @@ class PowerFieldView extends Ui.DataField
     protected var m_columnLocations = [25, 50, 75, 100];
 
     protected var m_powerIntervalSet;
+    protected var m_useSmallScreen;
 
     function initialize()
     {
@@ -31,6 +33,7 @@ class PowerFieldView extends Ui.DataField
             {
                 NUM_FIELDS = 7;
             }
+            m_useSmallScreen = app.getProperty("UseSmallScreenLayout");
         }
         catch(ex)
         {
@@ -103,7 +106,23 @@ class PowerFieldView extends Ui.DataField
         }
         else
         {
-            View.setLayout(Rez.Layouts.MainLayout(dc));
+            try
+            {
+                if(true == m_useSmallScreen)
+                {
+                    View.setLayout(Rez.Layouts.SmallLayout(dc));
+                }
+                else
+                {
+                    View.setLayout(Rez.Layouts.MainLayout(dc));
+                }
+            }
+            catch(ex)
+            {
+                System.println("PowerField/Exception caught in PowerFieldView::onLayout getting layout property.  error=" + ex.getErrorMessage());
+                ex.printStackTrace();
+                View.setLayout(Rez.Layouts.MainLayout(dc));
+            }
         }
         return true;
     }
@@ -123,33 +142,54 @@ class PowerFieldView extends Ui.DataField
                     return;
             }
             // See Activity.Info in the documentation for available information.
-            if(info has :currentHeartRate)
+            if((info has :currentHeartRate) && (info.currentHeartRate != null))
             {
-                if(info.currentHeartRate != null)
-                {
-                    //System.println("in Compute Heart Rate: " + info.currentHeartRate);
-                    m_hearts[e_CUR] = info.currentHeartRate;
-                    m_hearts[e_AVG] = info.averageHeartRate;
-                    m_hearts[e_MAX] = info.maxHeartRate;
-                }
-                else
-                {
-                    m_hearts = [0, 0, 0];
-                }
+                m_hearts[e_CUR] = info.currentHeartRate;
             }
-            if(info has :currentCadence)
+            else
             {
-                //System.println("in Compute Cadence: " + info.currentCadence);
-                if(info.currentCadence != null)
-                {
-                    if(info.currentCadence < CADENCE_LIMIT) { m_cadences[e_CUR] = info.currentCadence; }
-                    if(info.averageCadence < CADENCE_LIMIT) { m_cadences[e_AVG] = info.averageCadence; }
-                    if(info.maxCadence < CADENCE_LIMIT) { m_cadences[e_MAX] = info.maxCadence; }
-                }
-                else
-                {
-                    m_cadences = [0, 0, 0];
-                }
+                m_hearts[e_CUR] = 0;
+            }
+            if((info has :averageHeartRate) && (info.averageHeartRate != null))
+            {
+                m_hearts[e_AVG] = info.averageHeartRate;
+            }
+            else
+            {
+                m_hearts[e_AVG] = 0;
+            }
+            if((info has :maxHeartRate) && (info.maxHeartRate != null))
+            {
+                m_hearts[e_MAX] = info.maxHeartRate;
+            }
+            else
+            {
+                m_hearts[e_MAX] = 0;
+            }
+
+            if((info has :currentCadence) && (info.currentCadence != null) && (info.currentCadence < CADENCE_LIMIT))
+            {
+                m_cadences[e_CUR] = info.currentCadence;
+            }
+            else
+            {
+                m_cadences[e_CUR] = 0;
+            }
+            if((info has :averageCadence) && (info.averageCadence != null) && (info.averageCadence < CADENCE_LIMIT))
+            {
+                m_cadences[e_AVG] = info.averageCadence;
+            }
+            else
+            {
+                m_cadences[e_AVG] = 0;
+            }
+            if((info has :maxCadence) && (info.maxCadence != null) && (info.maxCadence < CADENCE_LIMIT))
+            {
+                m_cadences[e_MAX] = info.maxCadence;
+            }
+            else
+            {
+                m_cadences[e_MAX] = 0;
             }
             if(info has :currentPower)
             {
@@ -183,20 +223,32 @@ class PowerFieldView extends Ui.DataField
             // Set the foreground color and value
             var heart = View.findDrawableById("heart");
             heart.setColor( (backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK );
-            heart.setText(m_hearts[e_CUR].format("%d") + "/" + m_hearts[e_AVG].format("%d") + "/" + m_hearts[e_MAX].format("%d") + "h");
+            //heart.setText(m_hearts[e_CUR].format("%d") + "/" + m_hearts[e_AVG].format("%d") + "/" + m_hearts[e_MAX].format("%d") + "h");
+            heart.setText(Lang.format("$1$/$2$/$3$h", m_hearts));
             var cadence = View.findDrawableById("cadence");
             cadence.setColor( (backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK );
-            cadence.setText("c" + m_cadences[e_CUR].format("%d") + "/" + m_cadences[e_AVG].format("%d") + "/" + m_cadences[e_MAX].format("%d"));
+            //cadence.setText("c" + m_cadences[e_CUR].format("%d") + "/" + m_cadences[e_AVG].format("%d") + "/" + m_cadences[e_MAX].format("%d"));
+            cadence.setText(Lang.format("c$1$/$2$/$3$", m_cadences));
+            if(m_useSmallScreen)
+            {
+                heart.locX = m_columnLocations[1];
+                cadence.locX = m_columnLocations[1];
+            }
 
             // set title locations
+            var titleColour = ( backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_LT_GRAY : Gfx.COLOR_DK_GRAY;
             var avgTitle = View.findDrawableById("avgTitle");
             avgTitle.locX = m_columnLocations[0];
+            avgTitle.setColor(titleColour);
             var durationTitle = View.findDrawableById("durationTitle");
             durationTitle.locX = m_columnLocations[1];
+            durationTitle.setColor(titleColour);
             var peakTitle = View.findDrawableById("peakTitle");
             peakTitle.locX = m_columnLocations[2];
+            peakTitle.setColor(titleColour);
             var targetTitle = View.findDrawableById("targetTitle");
             targetTitle.locX = m_columnLocations[3];
+            targetTitle.setColor(titleColour);
 
             // populate fields
             var avgFields = new [NUM_FIELDS];
@@ -222,7 +274,7 @@ class PowerFieldView extends Ui.DataField
                 if( elapsedTime < m_powerIntervalSet.getDuration(indx) )
                 {
                     //System.println("Elapsed: " + m_elapsedTime + ".  Duration(" +indx+ ") == " + m_powerIntervalSet.getDuration(indx));
-                    fontColor = Gfx.COLOR_LT_GRAY;
+                    fontColor = ( backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_LT_GRAY : Gfx.COLOR_DK_GRAY;
                     avgColor = fontColor;
                     peakColor = fontColor;
                 }
@@ -266,7 +318,7 @@ class PowerFieldView extends Ui.DataField
                 // set values
                 if( (indx==0) || (elapsedTime > m_powerIntervalSet.getDuration(indx-1)) )
                 {
-                    avgFields[indx].setText(avg.toString() + "W");
+                    avgFields[indx].setText(avg.toString());
                     if(elapsedTime <= m_powerIntervalSet.getDuration(indx))
                     {
                         durationFields[indx].setText("<" + m_powerIntervalSet.getDurationText(indx));
@@ -275,7 +327,7 @@ class PowerFieldView extends Ui.DataField
                     {
                         durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
                     }
-                    peakFields[indx].setText(peak.toString() + "W");
+                    peakFields[indx].setText(peak.toString());
                     //System.println("duration field: " + (((elapsedTime < m_powerIntervalSet.getDuration(indx)) ? "<" : "") + m_powerIntervalSet.getDurationText(indx).toString()));
                 }
                 else
@@ -284,7 +336,7 @@ class PowerFieldView extends Ui.DataField
                     peakFields[indx].setText("");
                     durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
                 }
-                targetFields[indx].setText( m_powerIntervalSet.getTarget(indx).toString() + "W");
+                targetFields[indx].setText( m_powerIntervalSet.getTarget(indx).toString());
             }
 
             // Call parent's onUpdate(dc) to redraw the layout
