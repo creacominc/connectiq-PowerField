@@ -17,10 +17,14 @@ class PowerFieldView extends Ui.DataField
     protected var m_hearts;
     protected var m_cadences;
     protected var m_elapsedTime;
-    protected var m_columnLocations = [25, 50, 75, 100];
+    protected var m_columnLocations = [0,0,0,0];
+    protected var m_numberOfColumns = 0;
+    protected var m_center = 0;
 
     protected var m_powerIntervalSet;
     protected var m_useSmallScreen;
+    protected var m_columnIndex = 0;
+    protected var m_selectableTitles = ["", ""];
 
     function initialize()
     {
@@ -28,12 +32,21 @@ class PowerFieldView extends Ui.DataField
         try
         {
             var app = Application.getApp();
+            m_useSmallScreen = app.getProperty("UseSmallScreenLayout");
             NUM_FIELDS = app.getProperty("NumberOfFields");
             if((NUM_FIELDS<1) || (NUM_FIELDS>7))
             {
                 NUM_FIELDS = 7;
             }
-            m_useSmallScreen = app.getProperty("UseSmallScreenLayout");
+            // limit small screens to three columns
+            if(m_useSmallScreen)
+            {
+                m_numberOfColumns = 3;
+            }
+            else
+            {
+                m_numberOfColumns = 4;
+            }
         }
         catch(ex)
         {
@@ -48,13 +61,17 @@ class PowerFieldView extends Ui.DataField
         // get the screen width for placing items
         var mySettings = System.getDeviceSettings();
         var screenWidth = mySettings.screenWidth;
-        var columnWidth = screenWidth / 4;
-        m_columnLocations[0] = columnWidth;
-        m_columnLocations[1] = columnWidth * 2;
-        m_columnLocations[2] = columnWidth * 3;
-        m_columnLocations[3] = screenWidth;
+        m_center = Math.floor(screenWidth / 2);
+        var columnWidth = Math.floor(screenWidth / m_numberOfColumns);
+        for(var colIdx = 0; colIdx < m_numberOfColumns; ++colIdx)
+        {
+            m_columnLocations[colIdx] = columnWidth * (colIdx + 1);
+        }
+        m_columnIndex = 0;
+        var peakTitle = Ui.loadResource( Rez.Strings.peakTitle );
+        var targetTitle = Ui.loadResource( Rez.Strings.targetTitle );
+        m_selectableTitles = [peakTitle, targetTitle];
     }
-
 
     //! Timer transitions from stopped to running state
     function onTimerStart()
@@ -231,9 +248,12 @@ class PowerFieldView extends Ui.DataField
             cadence.setText(Lang.format("c$1$/$2$/$3$", m_cadences));
             if(m_useSmallScreen)
             {
-                heart.locX = m_columnLocations[1];
-                cadence.locX = m_columnLocations[1];
+                heart.locX = m_center;
+                cadence.locX = m_center;
             }
+
+            var app = Application.getApp();
+            var usePeak = app.usePeakColumn();
 
             // set title locations
             var titleColour = ( backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_LT_GRAY : Gfx.COLOR_DK_GRAY;
@@ -243,12 +263,22 @@ class PowerFieldView extends Ui.DataField
             var durationTitle = View.findDrawableById("durationTitle");
             durationTitle.locX = m_columnLocations[1];
             durationTitle.setColor(titleColour);
-            var peakTitle = View.findDrawableById("peakTitle");
-            peakTitle.locX = m_columnLocations[2];
-            peakTitle.setColor(titleColour);
-            var targetTitle = View.findDrawableById("targetTitle");
-            targetTitle.locX = m_columnLocations[3];
-            targetTitle.setColor(titleColour);
+            if(m_useSmallScreen)
+            {
+                var thirdTitle = View.findDrawableById( "thirdTitle" );
+                thirdTitle.locX = m_columnLocations[2];
+                thirdTitle.setColor(titleColour);
+                thirdTitle.setText( m_selectableTitles[ usePeak ? 0 : 1 ] );
+            }
+            else
+            {
+                var peakTitle = View.findDrawableById("peakTitle");
+                peakTitle.locX = m_columnLocations[2];
+                peakTitle.setColor(titleColour);
+                var targetTitle = View.findDrawableById("targetTitle");
+                targetTitle.locX = m_columnLocations[3];
+                targetTitle.setColor(titleColour);
+            }
 
             // populate fields
             var avgFields = new [NUM_FIELDS];
@@ -262,8 +292,15 @@ class PowerFieldView extends Ui.DataField
                 var peakColor = avgColor;
                 avgFields[indx]      = View.findDrawableById("avg" + indx);
                 durationFields[indx] = View.findDrawableById("duration" + indx);
-                peakFields[indx]     = View.findDrawableById("peak" + indx);
-                targetFields[indx]   = View.findDrawableById("target" + indx);
+                if(m_useSmallScreen)
+                {
+                    peakFields[indx]     = View.findDrawableById("third" + indx);
+                }
+                else
+                {
+                    peakFields[indx]     = View.findDrawableById("peak" + indx);
+                    targetFields[indx]   = View.findDrawableById("target" + indx);
+                }
                 // get the avg power once
                 var avg = m_powerIntervalSet.getAverage(indx);
                 // get the peak power once
@@ -309,12 +346,19 @@ class PowerFieldView extends Ui.DataField
                 avgFields[indx].locX = m_columnLocations[0];
                 durationFields[indx].locX = m_columnLocations[1];
                 peakFields[indx].locX = m_columnLocations[2];
-                targetFields[indx].locX = m_columnLocations[3];
+
                 // set colour
                 avgFields[indx].setColor(avgColor);
                 durationFields[indx].setColor(fontColor);
                 peakFields[indx].setColor(peakColor);
-                targetFields[indx].setColor(fontColor);
+
+                // set location and colour if not using a small screen
+                if(! m_useSmallScreen)
+                {
+                    targetFields[indx].locX = m_columnLocations[3];
+                    targetFields[indx].setColor(fontColor);
+                }
+
                 // set values
                 if( (indx==0) || (elapsedTime > m_powerIntervalSet.getDuration(indx-1)) )
                 {
@@ -327,16 +371,32 @@ class PowerFieldView extends Ui.DataField
                     {
                         durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
                     }
-                    peakFields[indx].setText(peak.toString());
+                    if(usePeak || (! m_useSmallScreen))
+                    {
+                        peakFields[indx].setText( peak.toString() );
+                    }
                     //System.println("duration field: " + (((elapsedTime < m_powerIntervalSet.getDuration(indx)) ? "<" : "") + m_powerIntervalSet.getDurationText(indx).toString()));
                 }
                 else
                 {
                     avgFields[indx].setText("");
-                    peakFields[indx].setText("");
+                    if((usePeak) || (! m_useSmallScreen))
+                    {
+                        peakFields[indx].setText("");
+                    }
                     durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
                 }
-                targetFields[indx].setText( m_powerIntervalSet.getTarget(indx).toString());
+                if(! m_useSmallScreen)
+                {
+                    targetFields[indx].setText( m_powerIntervalSet.getTarget(indx).toString());
+                }
+                else
+                { // using a small screen and not showing peak?  show the target in the third column.
+                    if(! usePeak)
+                    {
+                        peakFields[indx].setText( m_powerIntervalSet.getTarget(indx).toString() );
+                    }
+                }
             }
 
             // Call parent's onUpdate(dc) to redraw the layout

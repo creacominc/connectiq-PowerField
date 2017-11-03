@@ -18,6 +18,6 @@
     <string id="TargetError">Invalid Power Input</string>
     <string id="avgTitle">AvgW</string>
     <string id="durationTitle">Dur</string>
-    <string id="peakTitle">PeakW</string>
+    <string id="peakTitle">Peak</string>
     <string id="targetTitle">Target</string>
 </strings>

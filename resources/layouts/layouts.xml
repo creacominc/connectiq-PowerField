@@ -49,41 +49,33 @@
         <label id="heart" x="center" y="0" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_CENTER" font="Gfx.FONT_MEDIUM" />
         <label id="cadence" x="center" y="22" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_CENTER" font="Gfx.FONT_MEDIUM" />
 
-        <label id="avgTitle" text="@Strings.avgTitle" x="79" y="40" color="Gfx.COLOR_DK_GRAY" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="avg0" x="79" y="60" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="avg1" x="79" y="80" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="avg2" x="79" y="100" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="avg3" x="79" y="120" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="avg4" x="79" y="140" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="avg5" x="79" y="160" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="avg6" x="79" y="180" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="avgTitle" text="@Strings.avgTitle" x="79" y="44" color="Gfx.COLOR_DK_GRAY" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="avg0" x="79" y="64" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="avg1" x="79" y="84" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="avg2" x="79" y="104" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="avg3" x="79" y="124" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="avg4" x="79" y="144" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="avg5" x="79" y="164" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="avg6" x="79" y="184" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
 
         <label id="durationTitle" text="@Strings.durationTitle" x="139" y="40" color="Gfx.COLOR_DK_GRAY" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="duration0" x="139" y="60" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="duration1" x="139" y="80" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="duration2" x="139" y="100" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="duration3" x="139" y="120" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="duration4" x="139" y="140" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="duration5" x="139" y="160" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="duration6" x="139" y="180" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="duration0" x="139" y="64" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="duration1" x="139" y="84" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="duration2" x="139" y="104" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="duration3" x="139" y="124" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="duration4" x="139" y="144" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="duration5" x="139" y="164" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="duration6" x="139" y="184" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
 
-        <label id="peakTitle" text="@Strings.peakTitle" x="199" y="40" color="Gfx.COLOR_DK_GRAY" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="peak0" x="199" y="60" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="peak1" x="199" y="80" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="peak2" x="199" y="100" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="peak3" x="199" y="120" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="peak4" x="199" y="140" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="peak5" x="199" y="160" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="peak6" x="199" y="180" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="thirdTitle"  x="199" y="40" color="Gfx.COLOR_DK_GRAY" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="third0" x="199" y="64" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="third1" x="199" y="84" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="third2" x="199" y="104" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="third3" x="199" y="124" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="third4" x="199" y="144" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="third5" x="199" y="164" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
+        <label id="third6" x="199" y="184" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
 
-        <label id="targetTitle" text="@Strings.targetTitle" x="269" y="40" color="Gfx.COLOR_DK_GRAY" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="target0" x="269" y="60" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="target1" x="269" y="80" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="target2" x="269" y="100" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="target3" x="269" y="120" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="target4" x="269" y="140" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="target5" x="269" y="160" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
-        <label id="target6" x="269" y="180" color="Gfx.COLOR_WHITE" justification="Gfx.TEXT_JUSTIFY_RIGHT" font="Gfx.FONT_MEDIUM" />
     </layout>
 
 

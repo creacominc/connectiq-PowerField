@@ -3,11 +3,14 @@ using Toybox.System;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
 
-class PowerFieldApp extends App.AppBase {
+class PowerFieldApp extends App.AppBase
+{
+    protected var m_usePeakColumn = false;
 
     function initialize()
     {
         AppBase.initialize();
+        m_usePeakColumn = false;
     }
 
     // onStart() is called on application start up
@@ -29,7 +32,19 @@ class PowerFieldApp extends App.AppBase {
     //! Return the initial view of your application here
     function getInitialView()
     {
-        return [ new PowerFieldView() ];
+        return [ new PowerFieldView(), new PowerFieldDelegate() ];
     }
 
+    //! toggle the active column index
+    function onTapHandler()
+    {
+        //System.println("PowerField::onTapHandler status = " + m_usePeakColumn);
+        m_usePeakColumn = (! m_usePeakColumn);
+    }
+
+    //! get the peak column member
+    function usePeakColumn()
+    {
+        return m_usePeakColumn;
+    }
 }
