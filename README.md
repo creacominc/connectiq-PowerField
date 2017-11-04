@@ -9,8 +9,22 @@ A data field for Edge devices that shows heart rate, cadence, and 7 average powe
 
 
 # Purpose:  
+This data field displays the current, average, and maximum for your heart rate and cadence at the top of the field.  Under these it shows the current, average, peak, and target power for each of seven time intervals.  The current and peak (or target for the small-screen layout) will change colour to indicate your current state for that time period.
+ Rows with no average or peak power are time periods that have not yet been completed.
+ A Row with a less-than before the time interval (eg "<20m") is showing values for the entire ride since that time interval exceeds the ride time so far.
+ Rows above the incomplete row show the average for the last N seconds or minutes and the peak power for that interval.  
+ Values for incomplete times are displayed in a dark grey.  
+ Values for completed times that do not exceed 80% of the target are displayed in black or white depending on the background.
+ If the data exceeds 80% of the set target, the average and peak power show as red or orange.
+ If the data exceeds the target, it will display as blue.
+ 
+The time intervals for each row can be set in Garmin Express or from your phone in seconds for up to two hours (7200 seconds).
+If you find the four-column display hard to read, you can select a small-screen layout which shows three columns in larger fonts.  The third column can be toggled between the Target Power and the Peak Power by tapping on the data field.  (Testing with a Garmin 1000 has shown that this brings up the Home button and other overlays but they can be dismissed with a second tap.)  
 
-When using Best Bike Split or when trying to keep your Variability Index low, you need to target a power level and hold to it.  The end goal of this screen will be to show the key metrics needed while riding with the goal of "constant power over varying terrain".
+This data field is intended to be used to achieve two goals:
+ When using Best Bike Split or when trying to keep your Variability Index low, you need to target a power level and hold to it.  Using this screen you can maintain a relatively constant power over varying terrain to keep your VI low.
+ You can set targets for an event or goals that you want to beat by entering the time and the power output you want to achieve for that time. 
+ 
 
 # Resources:
 - The field can be downloaded from https://apps.garmin.com/en-US/apps/ae433c7a-d706-4f80-8e29-f64e3fc4add4

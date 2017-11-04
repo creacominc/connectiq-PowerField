@@ -1,9 +1,18 @@
 <settings>
+    <setting propertyKey="@Properties.AppVersion" title="@Strings.AppVersionTitle">
+        <settingConfig type="alphaNumeric" readonly="true" />
+    </setting>
+
 	<!-- 
 	<setting propertyKey="@Properties.NumberOfFields" title="@Strings.NumberOfFieldsTitle" prompt="@Strings.NumberOfFieldsPrompt">
 		<settingConfig type="numeric" errorMessage="@Strings.NumberOfFieldsError" />
 	</setting>
 	 -->
+
+	<setting propertyKey="@Properties.UseSmallScreenLayout" title="@Strings.UseSmallScreenLayoutTitle" prompt="@Strings.UseSmallScreenLayoutPrompt">
+		<settingConfig type="boolean" errorMessage="@Strings.UseSmallScreenLayoutError" />
+	</setting>
+
 
     <setting propertyKey="@Properties.Time0" title="@Strings.TimeTitle" prompt="@Strings.TimePrompt">
         <settingConfig type="numeric" errorMessage="@Strings.TimeError" />

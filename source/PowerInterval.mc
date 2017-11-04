@@ -14,30 +14,11 @@ class PowerInterval
     protected var m_displayUnits;  // display 's' or 'm'
     protected var m_displayInterval;  // duration changed to minutes if needed
 
-    function initialize( indx, greenAt )
+    function initialize( indx, duration, greenAt )
     {
         var app = Application.getApp();
         m_fullTimeElapsed = false;
-        // get Time settings
-        try
-        {
-            m_duration = app.getProperty("Time" + indx).toNumber();
-        }
-        catch(ex)
-        {
-            System.println("PowerField/Exception caught getting the Time" + indx + " property.  Error=" + ex.getErrorMessage());
-            ex.printStackTrace();
-            m_duration = 0;
-        }
-        // duration cannot be less than 2 seconds or greater than 2 hours
-        if(m_duration < 2)
-        {
-            m_duration = 2;
-        }
-        if(m_duration > 7200)
-        {
-            m_duration = 7200;
-        }
+        m_duration = duration;
 
         // get Target settings
         try

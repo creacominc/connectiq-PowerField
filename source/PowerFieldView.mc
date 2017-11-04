@@ -1,6 +1,7 @@
 using Toybox.WatchUi as Ui;
 using Toybox.Graphics as Gfx;
 using Toybox.System;
+using Toybox.Lang;
 
 class PowerFieldView extends Ui.DataField
 {
@@ -16,9 +17,14 @@ class PowerFieldView extends Ui.DataField
     protected var m_hearts;
     protected var m_cadences;
     protected var m_elapsedTime;
-    protected var m_columnLocations = [25, 50, 75, 100];
+    protected var m_columnLocations = [0,0,0,0];
+    protected var m_numberOfColumns = 0;
+    protected var m_center = 0;
 
     protected var m_powerIntervalSet;
+    protected var m_useSmallScreen;
+    protected var m_columnIndex = 0;
+    protected var m_selectableTitles = ["", ""];
 
     function initialize()
     {
@@ -26,10 +32,20 @@ class PowerFieldView extends Ui.DataField
         try
         {
             var app = Application.getApp();
+            m_useSmallScreen = app.getProperty("UseSmallScreenLayout");
             NUM_FIELDS = app.getProperty("NumberOfFields");
             if((NUM_FIELDS<1) || (NUM_FIELDS>7))
             {
                 NUM_FIELDS = 7;
+            }
+            // limit small screens to three columns
+            if(m_useSmallScreen)
+            {
+                m_numberOfColumns = 3;
+            }
+            else
+            {
+                m_numberOfColumns = 4;
             }
         }
         catch(ex)
@@ -45,13 +61,17 @@ class PowerFieldView extends Ui.DataField
         // get the screen width for placing items
         var mySettings = System.getDeviceSettings();
         var screenWidth = mySettings.screenWidth;
-        var columnWidth = screenWidth / 4;
-        m_columnLocations[0] = columnWidth;
-        m_columnLocations[1] = columnWidth * 2;
-        m_columnLocations[2] = columnWidth * 3;
-        m_columnLocations[3] = screenWidth;
+        m_center = Math.floor(screenWidth / 2);
+        var columnWidth = Math.floor(screenWidth / m_numberOfColumns);
+        for(var colIdx = 0; colIdx < m_numberOfColumns; ++colIdx)
+        {
+            m_columnLocations[colIdx] = columnWidth * (colIdx + 1);
+        }
+        m_columnIndex = 0;
+        var peakTitle = Ui.loadResource( Rez.Strings.peakTitle );
+        var targetTitle = Ui.loadResource( Rez.Strings.targetTitle );
+        m_selectableTitles = [peakTitle, targetTitle];
     }
-
 
     //! Timer transitions from stopped to running state
     function onTimerStart()
@@ -103,7 +123,23 @@ class PowerFieldView extends Ui.DataField
         }
         else
         {
-            View.setLayout(Rez.Layouts.MainLayout(dc));
+            try
+            {
+                if(true == m_useSmallScreen)
+                {
+                    View.setLayout(Rez.Layouts.SmallLayout(dc));
+                }
+                else
+                {
+                    View.setLayout(Rez.Layouts.MainLayout(dc));
+                }
+            }
+            catch(ex)
+            {
+                System.println("PowerField/Exception caught in PowerFieldView::onLayout getting layout property.  error=" + ex.getErrorMessage());
+                ex.printStackTrace();
+                View.setLayout(Rez.Layouts.MainLayout(dc));
+            }
         }
         return true;
     }
@@ -123,33 +159,54 @@ class PowerFieldView extends Ui.DataField
                     return;
             }
             // See Activity.Info in the documentation for available information.
-            if(info has :currentHeartRate)
+            if((info has :currentHeartRate) && (info.currentHeartRate != null))
             {
-                if(info.currentHeartRate != null)
-                {
-                    //System.println("in Compute Heart Rate: " + info.currentHeartRate);
-                    m_hearts[e_CUR] = info.currentHeartRate;
-                    m_hearts[e_AVG] = info.averageHeartRate;
-                    m_hearts[e_MAX] = info.maxHeartRate;
-                }
-                else
-                {
-                    m_hearts = [0, 0, 0];
-                }
+                m_hearts[e_CUR] = info.currentHeartRate;
             }
-            if(info has :currentCadence)
+            else
             {
-                //System.println("in Compute Cadence: " + info.currentCadence);
-                if(info.currentCadence != null)
-                {
-                    if(info.currentCadence < CADENCE_LIMIT) { m_cadences[e_CUR] = info.currentCadence; }
-                    if(info.averageCadence < CADENCE_LIMIT) { m_cadences[e_AVG] = info.averageCadence; }
-                    if(info.maxCadence < CADENCE_LIMIT) { m_cadences[e_MAX] = info.maxCadence; }
-                }
-                else
-                {
-                    m_cadences = [0, 0, 0];
-                }
+                m_hearts[e_CUR] = 0;
+            }
+            if((info has :averageHeartRate) && (info.averageHeartRate != null))
+            {
+                m_hearts[e_AVG] = info.averageHeartRate;
+            }
+            else
+            {
+                m_hearts[e_AVG] = 0;
+            }
+            if((info has :maxHeartRate) && (info.maxHeartRate != null))
+            {
+                m_hearts[e_MAX] = info.maxHeartRate;
+            }
+            else
+            {
+                m_hearts[e_MAX] = 0;
+            }
+
+            if((info has :currentCadence) && (info.currentCadence != null) && (info.currentCadence < CADENCE_LIMIT))
+            {
+                m_cadences[e_CUR] = info.currentCadence;
+            }
+            else
+            {
+                m_cadences[e_CUR] = 0;
+            }
+            if((info has :averageCadence) && (info.averageCadence != null) && (info.averageCadence < CADENCE_LIMIT))
+            {
+                m_cadences[e_AVG] = info.averageCadence;
+            }
+            else
+            {
+                m_cadences[e_AVG] = 0;
+            }
+            if((info has :maxCadence) && (info.maxCadence != null) && (info.maxCadence < CADENCE_LIMIT))
+            {
+                m_cadences[e_MAX] = info.maxCadence;
+            }
+            else
+            {
+                m_cadences[e_MAX] = 0;
             }
             if(info has :currentPower)
             {
@@ -183,20 +240,45 @@ class PowerFieldView extends Ui.DataField
             // Set the foreground color and value
             var heart = View.findDrawableById("heart");
             heart.setColor( (backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK );
-            heart.setText(m_hearts[e_CUR].format("%d") + "/" + m_hearts[e_AVG].format("%d") + "/" + m_hearts[e_MAX].format("%d") + "h");
+            //heart.setText(m_hearts[e_CUR].format("%d") + "/" + m_hearts[e_AVG].format("%d") + "/" + m_hearts[e_MAX].format("%d") + "h");
+            heart.setText(Lang.format("$1$/$2$/$3$h", m_hearts));
             var cadence = View.findDrawableById("cadence");
             cadence.setColor( (backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK );
-            cadence.setText("c" + m_cadences[e_CUR].format("%d") + "/" + m_cadences[e_AVG].format("%d") + "/" + m_cadences[e_MAX].format("%d"));
+            //cadence.setText("c" + m_cadences[e_CUR].format("%d") + "/" + m_cadences[e_AVG].format("%d") + "/" + m_cadences[e_MAX].format("%d"));
+            cadence.setText(Lang.format("c$1$/$2$/$3$", m_cadences));
+            if(m_useSmallScreen)
+            {
+                heart.locX = m_center;
+                cadence.locX = m_center;
+            }
+
+            var app = Application.getApp();
+            var usePeak = app.usePeakColumn();
 
             // set title locations
+            var titleColour = ( backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_LT_GRAY : Gfx.COLOR_DK_GRAY;
             var avgTitle = View.findDrawableById("avgTitle");
             avgTitle.locX = m_columnLocations[0];
+            avgTitle.setColor(titleColour);
             var durationTitle = View.findDrawableById("durationTitle");
             durationTitle.locX = m_columnLocations[1];
-            var peakTitle = View.findDrawableById("peakTitle");
-            peakTitle.locX = m_columnLocations[2];
-            var targetTitle = View.findDrawableById("targetTitle");
-            targetTitle.locX = m_columnLocations[3];
+            durationTitle.setColor(titleColour);
+            if(m_useSmallScreen)
+            {
+                var thirdTitle = View.findDrawableById( "thirdTitle" );
+                thirdTitle.locX = m_columnLocations[2];
+                thirdTitle.setColor(titleColour);
+                thirdTitle.setText( m_selectableTitles[ usePeak ? 0 : 1 ] );
+            }
+            else
+            {
+                var peakTitle = View.findDrawableById("peakTitle");
+                peakTitle.locX = m_columnLocations[2];
+                peakTitle.setColor(titleColour);
+                var targetTitle = View.findDrawableById("targetTitle");
+                targetTitle.locX = m_columnLocations[3];
+                targetTitle.setColor(titleColour);
+            }
 
             // populate fields
             var avgFields = new [NUM_FIELDS];
@@ -210,8 +292,15 @@ class PowerFieldView extends Ui.DataField
                 var peakColor = avgColor;
                 avgFields[indx]      = View.findDrawableById("avg" + indx);
                 durationFields[indx] = View.findDrawableById("duration" + indx);
-                peakFields[indx]     = View.findDrawableById("peak" + indx);
-                targetFields[indx]   = View.findDrawableById("target" + indx);
+                if(m_useSmallScreen)
+                {
+                    peakFields[indx]     = View.findDrawableById("third" + indx);
+                }
+                else
+                {
+                    peakFields[indx]     = View.findDrawableById("peak" + indx);
+                    targetFields[indx]   = View.findDrawableById("target" + indx);
+                }
                 // get the avg power once
                 var avg = m_powerIntervalSet.getAverage(indx);
                 // get the peak power once
@@ -222,7 +311,7 @@ class PowerFieldView extends Ui.DataField
                 if( elapsedTime < m_powerIntervalSet.getDuration(indx) )
                 {
                     //System.println("Elapsed: " + m_elapsedTime + ".  Duration(" +indx+ ") == " + m_powerIntervalSet.getDuration(indx));
-                    fontColor = Gfx.COLOR_LT_GRAY;
+                    fontColor = ( backgroundColor == Gfx.COLOR_BLACK) ? Gfx.COLOR_LT_GRAY : Gfx.COLOR_DK_GRAY;
                     avgColor = fontColor;
                     peakColor = fontColor;
                 }
@@ -257,16 +346,23 @@ class PowerFieldView extends Ui.DataField
                 avgFields[indx].locX = m_columnLocations[0];
                 durationFields[indx].locX = m_columnLocations[1];
                 peakFields[indx].locX = m_columnLocations[2];
-                targetFields[indx].locX = m_columnLocations[3];
+
                 // set colour
                 avgFields[indx].setColor(avgColor);
                 durationFields[indx].setColor(fontColor);
                 peakFields[indx].setColor(peakColor);
-                targetFields[indx].setColor(fontColor);
+
+                // set location and colour if not using a small screen
+                if(! m_useSmallScreen)
+                {
+                    targetFields[indx].locX = m_columnLocations[3];
+                    targetFields[indx].setColor(fontColor);
+                }
+
                 // set values
                 if( (indx==0) || (elapsedTime > m_powerIntervalSet.getDuration(indx-1)) )
                 {
-                    avgFields[indx].setText(avg.toString() + "W");
+                    avgFields[indx].setText(avg.toString());
                     if(elapsedTime <= m_powerIntervalSet.getDuration(indx))
                     {
                         durationFields[indx].setText("<" + m_powerIntervalSet.getDurationText(indx));
@@ -275,16 +371,32 @@ class PowerFieldView extends Ui.DataField
                     {
                         durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
                     }
-                    peakFields[indx].setText(peak.toString() + "W");
+                    if(usePeak || (! m_useSmallScreen))
+                    {
+                        peakFields[indx].setText( peak.toString() );
+                    }
                     //System.println("duration field: " + (((elapsedTime < m_powerIntervalSet.getDuration(indx)) ? "<" : "") + m_powerIntervalSet.getDurationText(indx).toString()));
                 }
                 else
                 {
                     avgFields[indx].setText("");
-                    peakFields[indx].setText("");
+                    if((usePeak) || (! m_useSmallScreen))
+                    {
+                        peakFields[indx].setText("");
+                    }
                     durationFields[indx].setText(m_powerIntervalSet.getDurationText(indx));
                 }
-                targetFields[indx].setText( m_powerIntervalSet.getTarget(indx).toString() + "W");
+                if(! m_useSmallScreen)
+                {
+                    targetFields[indx].setText( m_powerIntervalSet.getTarget(indx).toString());
+                }
+                else
+                { // using a small screen and not showing peak?  show the target in the third column.
+                    if(! usePeak)
+                    {
+                        peakFields[indx].setText( m_powerIntervalSet.getTarget(indx).toString() );
+                    }
+                }
             }
 
             // Call parent's onUpdate(dc) to redraw the layout

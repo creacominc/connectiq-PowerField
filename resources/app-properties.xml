@@ -1,13 +1,16 @@
 <properties>
+	<property id="AppVersion" type="string">1.0.6</property>
 	<property id="NumberOfFields" type="number">7</property>
+	<property id="UseSmallScreenLayout" type="boolean">false</property>
+
     <property id="Time0" type="number">3</property>
-    <property id="Target0" type="number">908</property>
+    <property id="Target0" type="number">923</property>
     <property id="Time1" type="number">30</property>
-    <property id="Target1" type="number">577</property>
+    <property id="Target1" type="number">657</property>
     <property id="Time2" type="number">60</property>
-    <property id="Target2" type="number">401</property>
+    <property id="Target2" type="number">416</property>
     <property id="Time3" type="number">300</property>
-    <property id="Target3" type="number">401</property>
+    <property id="Target3" type="number">262</property>
     <property id="Time4" type="number">1200</property>
     <property id="Target4" type="number">248</property>
     <property id="Time5" type="number">3600</property>
