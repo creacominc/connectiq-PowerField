@@ -10,13 +10,32 @@ class PowerIntervalSet
 
     function initialize(numberOfFields)
     {
-        var largestIntervalInSeconds = 4;  // minimum storage will be 4 seconds
+        var largestIntervalInSeconds = 60;  // minimum storage will be 60 seconds
+        var lastDuration = 0;
         var greenAt = 0.80;  // turn green at 80% of the target... @TODO move this to a resource.
+        var app = Application.getApp();
         for( var indx = 0; indx < numberOfFields; indx++ )
         {
-            // create and add a PowerInterval to the collection - note the largest interval
-            m_powerIntervalSet.add(new PowerInterval(indx, greenAt));
-            var duration = m_powerIntervalSet[ m_powerIntervalSet.size() - 1 ].getDuration();
+            var duration = 0;
+            try
+            {
+                // create and add a PowerInterval to the collection - note the largest interval
+                duration = app.getProperty("Time" + indx).toNumber();
+            }
+            catch(ex)
+            {
+                System.println("PowerField/Exception caught getting the Time" + indx + " property.  Error=" + ex.getErrorMessage());
+                ex.printStackTrace();
+                duration = 0;
+            }
+            // duration cannot be less than the last duration plus 2 seconds or greater than 2 hours
+                if((duration < lastDuration + 2) || (duration > 7200))
+            {
+                duration = lastDuration + 2;
+            }
+            lastDuration = duration;
+            m_powerIntervalSet.add(new PowerInterval(indx, duration, greenAt));
+            //var duration = m_powerIntervalSet[ m_powerIntervalSet.size() - 1 ].getDuration();
             //System.println("size: " + duration);
             if(duration > largestIntervalInSeconds)
             {
