@@ -4,17 +4,17 @@
 	<property id="UseSmallScreenLayout" type="boolean">false</property>
 
     <property id="Time0" type="number">3</property>
-    <property id="Target0" type="number">923</property>
+    <property id="Target0" type="number">973</property>
     <property id="Time1" type="number">30</property>
     <property id="Target1" type="number">657</property>
     <property id="Time2" type="number">60</property>
-    <property id="Target2" type="number">416</property>
+    <property id="Target2" type="number">436</property>
     <property id="Time3" type="number">300</property>
-    <property id="Target3" type="number">262</property>
+    <property id="Target3" type="number">267</property>
     <property id="Time4" type="number">1200</property>
-    <property id="Target4" type="number">248</property>
+    <property id="Target4" type="number">256</property>
     <property id="Time5" type="number">3600</property>
-    <property id="Target5" type="number">203</property>
+    <property id="Target5" type="number">223</property>
     <property id="Time6" type="number">7200</property>
-    <property id="Target6" type="number">170</property>
+    <property id="Target6" type="number">182</property>
 </properties>

@@ -47,12 +47,7 @@ class PowerInterval
 
     function setDisplayUnits()
     {
-        if(m_duration >= 60*60)
-        {
-            m_displayInterval = m_duration / 60 / 60;
-            m_displayUnits = "h";
-        }
-        else if(m_duration >= 60)
+        if(m_duration > 5*60)
         {
             m_displayInterval = m_duration / 60;
             m_displayUnits = "m";
