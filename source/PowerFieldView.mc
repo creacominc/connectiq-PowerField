@@ -28,49 +28,58 @@ class PowerFieldView extends Ui.DataField
 
     function initialize()
     {
-        DataField.initialize();
         try
         {
-            var app = Application.getApp();
-            m_useSmallScreen = app.getProperty("UseSmallScreenLayout");
-            NUM_FIELDS = app.getProperty("NumberOfFields");
-            if((NUM_FIELDS<1) || (NUM_FIELDS>7))
+            DataField.initialize();
+            try
             {
+                var app = Application.getApp();
+                m_useSmallScreen = app.getProperty("UseSmallScreenLayout");
+                NUM_FIELDS = app.getProperty("NumberOfFields");
+                if((NUM_FIELDS<1) || (NUM_FIELDS>7))
+                {
+                    NUM_FIELDS = 7;
+                }
+                // limit small screens to three columns
+                if(m_useSmallScreen)
+                {
+                    m_numberOfColumns = 3;
+                }
+                else
+                {
+                    m_numberOfColumns = 4;
+                }
+            }
+            catch(ex)
+            {
+                System.println("PowerField/Exception caught getting number of fields.  error=" + ex.getErrorMessage());
+                ex.printStackTrace();
                 NUM_FIELDS = 7;
             }
-            // limit small screens to three columns
-            if(m_useSmallScreen)
+            m_hearts = [0, 0, 0];
+            m_cadences = [0, 0, 0];
+            m_elapsedTime = 0;
+            m_powerIntervalSet = new PowerIntervalSet(NUM_FIELDS);
+            // get the screen width for placing items
+            var mySettings = System.getDeviceSettings();
+            var screenWidth = mySettings.screenWidth;
+            m_center = Math.floor(screenWidth / 2);
+            var columnWidth = Math.floor(screenWidth / m_numberOfColumns);
+            for(var colIdx = 0; colIdx < m_numberOfColumns; ++colIdx)
             {
-                m_numberOfColumns = 3;
+                m_columnLocations[colIdx] = columnWidth * (colIdx + 1);
             }
-            else
-            {
-                m_numberOfColumns = 4;
-            }
+            m_columnIndex = 0;
+            var peakTitle = Ui.loadResource( Rez.Strings.peakTitle );
+            var targetTitle = Ui.loadResource( Rez.Strings.targetTitle );
+            m_selectableTitles = [peakTitle, targetTitle];
         }
         catch(ex)
         {
-            System.println("PowerField/Exception caught getting number of fields.  error=" + ex.getErrorMessage());
+            System.println("PowerFieldView exception caught on initialize.  error=" + ex.getErrorMessage());
             ex.printStackTrace();
-            NUM_FIELDS = 7;
+            throw ex;
         }
-        m_hearts = [0, 0, 0];
-        m_cadences = [0, 0, 0];
-        m_elapsedTime = 0;
-        m_powerIntervalSet = new PowerIntervalSet(NUM_FIELDS);
-        // get the screen width for placing items
-        var mySettings = System.getDeviceSettings();
-        var screenWidth = mySettings.screenWidth;
-        m_center = Math.floor(screenWidth / 2);
-        var columnWidth = Math.floor(screenWidth / m_numberOfColumns);
-        for(var colIdx = 0; colIdx < m_numberOfColumns; ++colIdx)
-        {
-            m_columnLocations[colIdx] = columnWidth * (colIdx + 1);
-        }
-        m_columnIndex = 0;
-        var peakTitle = Ui.loadResource( Rez.Strings.peakTitle );
-        var targetTitle = Ui.loadResource( Rez.Strings.targetTitle );
-        m_selectableTitles = [peakTitle, targetTitle];
     }
 
     //! Timer transitions from stopped to running state

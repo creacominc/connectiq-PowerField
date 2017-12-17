@@ -6,12 +6,22 @@ class Background extends Ui.Drawable {
 
     hidden var mColor;
 
-    function initialize() {
-        var dictionary = {
-            :identifier => "Background"
-        };
+    function initialize()
+    {
+        try
+        {
+            var dictionary = {
+                :identifier => "Background"
+            };
 
-        Drawable.initialize(dictionary);
+            Drawable.initialize(dictionary);
+        }
+        catch(ex)
+        {
+            System.println("PowerField Background exception caught on initialize.  error=" + ex.getErrorMessage());
+            ex.printStackTrace();
+            throw ex;
+        }
     }
 
     function setColor(color) {

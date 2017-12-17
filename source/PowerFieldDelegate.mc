@@ -5,7 +5,16 @@ class PowerFieldDelegate extends WatchUi.InputDelegate
 
     function initialize()
     {
-        InputDelegate.initialize();
+        try
+        {
+            InputDelegate.initialize();
+        }
+        catch(ex)
+        {
+            System.println("PowerFieldDelegate exception caught on initialize.  error=" + ex.getErrorMessage());
+            ex.printStackTrace();
+            throw ex;
+        }
     }
 
     function onTap( evt )

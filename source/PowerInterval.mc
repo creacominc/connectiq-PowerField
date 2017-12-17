@@ -13,36 +13,50 @@ class PowerInterval
     protected var m_peak;      // peak average for the period
     protected var m_displayUnits;  // display 's' or 'm'
     protected var m_displayInterval;  // duration changed to minutes if needed
+    protected var m_verboseLogging = true;
 
     function initialize( indx, duration, greenAt )
     {
-        var app = Application.getApp();
-        m_fullTimeElapsed = false;
-        m_duration = duration;
-
-        // get Target settings
         try
         {
-            m_target = app.getProperty("Target" + indx).toNumber();
+            var app = Application.getApp();
+            m_fullTimeElapsed = false;
+            m_duration = duration;
+            m_verboseLogging = app.getProperty("VerboseLogging");
+
+            // get Target settings
+            try
+            {
+                m_target = app.getProperty("Target" + indx).toNumber();
+            }
+            catch(ex)
+            {
+                System.println("PowerField/Exception caught getting the Target" + indx + " property.  Error=" + ex.getErrorMessage());
+                ex.printStackTrace();
+                m_target = 0;
+            }
+            // target power cannot be less than 2W
+            if(m_target < 2)
+            {
+                m_target = 2;
+            }
+            m_greenAt = Math.floor(greenAt * m_target);
+            m_lastTotal = 0;
+            m_average = 0;
+            m_peak = 0;
+            //
+            setDisplayUnits();
+            if(m_verboseLogging)
+            {
+                System.println( "created PowerInterval of " + m_target + "W  for " + m_duration + "s.  green at " + m_greenAt.toNumber() );
+            }
         }
         catch(ex)
         {
-            System.println("PowerField/Exception caught getting the Target" + indx + " property.  Error=" + ex.getErrorMessage());
+            System.println("PowerInterval exception caught on initialize.  error=" + ex.getErrorMessage());
             ex.printStackTrace();
-            m_target = 0;
+            throw ex;
         }
-        // target power cannot be less than 2W
-        if(m_target < 2)
-        {
-            m_target = 2;
-        }
-        m_greenAt = Math.floor(greenAt * m_target);
-        m_lastTotal = 0;
-        m_average = 0;
-        m_peak = 0;
-        //
-        setDisplayUnits();
-        //System.println( "created PowerInterval of " + m_target + "W  for " + m_duration + "s.  green at " + m_greenAt.toNumber() );
     }
 
     function setDisplayUnits()
@@ -111,7 +125,10 @@ class PowerInterval
             if(m_fullTimeElapsed  && (curTailIndex < 0))
             {
                 curTailIndex = numbers.size() + curTailIndex;
-                //System.println("time (" + m_duration + ") elapsed, tail="+curTailIndex);
+                if(m_verboseLogging)
+                {
+                    System.println("time (" + m_duration + ") elapsed, tail="+curTailIndex);
+                }
             }
             else
             {
@@ -120,7 +137,10 @@ class PowerInterval
                 {
                     m_fullTimeElapsed = true;
                     m_peak = m_average;
-                    //System.println("m_fullTimeElapsed(" + m_duration + ")  is set for " + m_duration + "  average=" + m_average);
+                    if(m_verboseLogging)
+                    {
+                        System.println("m_fullTimeElapsed(" + m_duration + ")  is set for " + m_duration + "  average=" + m_average);
+                    }
                 }
             }
             m_lastTotal = m_lastTotal - ( curTailIndex >= 0 ? numbers[curTailIndex] : 0 ) + numbers[curHeadIndex];
@@ -128,7 +148,10 @@ class PowerInterval
             if((m_peak < m_average) || !m_fullTimeElapsed)
             {
                 m_peak = m_average;
-                //System.println("Peak set.  total(" + m_duration + ") ="+m_lastTotal+",  average="+m_average+",  peak="+m_peak + ",  timeElapsed=" + m_fullTimeElapsed);
+                if(m_verboseLogging)
+                {
+                    System.println("Peak set.  total(" + m_duration + ") ="+m_lastTotal+",  average="+m_average+",  peak="+m_peak + ",  timeElapsed=" + m_fullTimeElapsed);
+                }
             }
             //System.println("total(" + m_duration + ") ="+m_lastTotal+",  average="+m_average+",  peak="+m_peak + ",  timeElapsed=" + m_fullTimeElapsed);
         }

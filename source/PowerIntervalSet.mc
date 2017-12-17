@@ -7,43 +7,59 @@ class PowerIntervalSet
     protected var m_powerIntervalSet = [];
     protected var m_insertHead = -1;
     protected var m_insertTail = -1;
+    protected var m_verboseLogging = true;
 
     function initialize(numberOfFields)
     {
-        var largestIntervalInSeconds = 60;  // minimum storage will be 60 seconds
-        var lastDuration = 0;
-        var greenAt = 0.80;  // turn green at 80% of the target... @TODO move this to a resource.
-        var app = Application.getApp();
-        for( var indx = 0; indx < numberOfFields; indx++ )
+        try
         {
-            var duration = 0;
-            try
+            var largestIntervalInSeconds = 60;  // minimum storage will be 60 seconds
+            var lastDuration = 0;
+            var greenAt = 0.80;  // turn green at 80% of the target... @TODO move this to a resource.
+            var app = Application.getApp();
+            m_verboseLogging = app.getProperty("VerboseLogging");
+            for( var indx = 0; indx < numberOfFields; indx++ )
             {
-                // create and add a PowerInterval to the collection - note the largest interval
-                duration = app.getProperty("Time" + indx).toNumber();
+                var duration = 0;
+                try
+                {
+                    // create and add a PowerInterval to the collection - note the largest interval
+                    duration = app.getProperty("Time" + indx).toNumber();
+                }
+                catch(ex)
+                {
+                    System.println("PowerField/Exception caught getting the Time" + indx + " property.  Error=" + ex.getErrorMessage());
+                    ex.printStackTrace();
+                    duration = 0;
+                }
+                // duration cannot be less than the last duration plus 2 seconds or greater than 2 hours
+                    if((duration < lastDuration + 2) || (duration > 7200))
+                {
+                    duration = lastDuration + 2;
+                }
+                lastDuration = duration;
+                m_powerIntervalSet.add(new PowerInterval(indx, duration, greenAt));
+                if(m_verboseLogging)
+                {
+                        System.println("size: " + duration);
+                    }
+                if(duration > largestIntervalInSeconds)
+                {
+                    largestIntervalInSeconds = duration;
+                }
             }
-            catch(ex)
+            if(m_verboseLogging)
             {
-                System.println("PowerField/Exception caught getting the Time" + indx + " property.  Error=" + ex.getErrorMessage());
-                ex.printStackTrace();
-                duration = 0;
+                System.println("creating number array of size: " + largestIntervalInSeconds);
             }
-            // duration cannot be less than the last duration plus 2 seconds or greater than 2 hours
-                if((duration < lastDuration + 2) || (duration > 7200))
-            {
-                duration = lastDuration + 2;
-            }
-            lastDuration = duration;
-            m_powerIntervalSet.add(new PowerInterval(indx, duration, greenAt));
-            //var duration = m_powerIntervalSet[ m_powerIntervalSet.size() - 1 ].getDuration();
-            //System.println("size: " + duration);
-            if(duration > largestIntervalInSeconds)
-            {
-                largestIntervalInSeconds = duration;
-            }
+            m_numbers = new [ largestIntervalInSeconds + 1 ];
         }
-        //System.println("creating number array of size: " + largestIntervalInSeconds);
-        m_numbers = new [ largestIntervalInSeconds + 1 ];
+        catch(ex)
+        {
+            System.println("PowerIntervalSet exception caught on initialize.  error=" + ex.getErrorMessage());
+            ex.printStackTrace();
+            throw ex;
+        }
     }
 
     function update(currentPower)

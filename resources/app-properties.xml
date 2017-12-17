@@ -1,5 +1,6 @@
+
 <properties>
-	<property id="AppVersion" type="string">1.0.8</property>
+	<property id="AppVersion" type="string">1.0.9</property>
 	<property id="NumberOfFields" type="number">7</property>
 	<property id="UseSmallScreenLayout" type="boolean">false</property>
 
@@ -17,4 +18,7 @@
     <property id="Target5" type="number">223</property>
     <property id="Time6" type="number">7200</property>
     <property id="Target6" type="number">182</property>
+
+	<property id="VerboseLogging" type="boolean">false</property>
+
 </properties>

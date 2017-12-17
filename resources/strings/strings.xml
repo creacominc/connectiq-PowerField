@@ -1,11 +1,9 @@
 <strings>
+	<!--  application -->
     <string id="AppName">PowerField</string>
     <string id="AppVersionTitle">Version</string>
 
-    <string id="NumberOfFieldsTitle">Number of Fields</string>
-    <string id="NumberOfFieldsPrompt">Enter the number of fields to display (up to 7)</string>
-    <string id="NumberOfFieldsError">Invalid number of fields</string>
-
+	<!--  settings  -->
 	<string id="UseSmallScreenLayoutTitle">Use small screen layout</string>
 	<string id="UseSmallScreenLayoutPrompt">Enable to use larger font for smaller screens.</string>
 	<string id="UseSmallScreenLayoutError">Invalid setting for small screen layout.</string>
@@ -13,11 +11,19 @@
     <string id="TimeTitle">Time Period</string>
     <string id="TimePrompt">Enter time period in seconds</string>
     <string id="TimeError">Invalid Time Input</string>
+
     <string id="TargetTitle">Target Power</string>
     <string id="TargetPrompt">Enter target power in watts</string>
     <string id="TargetError">Invalid Power Input</string>
+
+	<string id="VerboseLoggingTitle">Verbose Logging</string>
+	<string id="VerboseLoggingPrompt">Enable Verbose Logging</string>
+	<string id="VerboseLoggingError">Invalid value for verbose logging.</string>
+
+	<!--  column headers -->
     <string id="avgTitle">AvgW</string>
     <string id="durationTitle">Dur</string>
     <string id="peakTitle">Peak</string>
     <string id="targetTitle">Target</string>
+
 </strings>
