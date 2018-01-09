@@ -36,10 +36,22 @@ class PowerInterval
                 m_target = 0;
             }
             // target power cannot be less than 2W
-            if(m_target < 2)
+            try
             {
+                if(m_target < 2)
+                {
+                    m_target = 2;
+                }
+            }
+            catch(ex)
+            {
+                System.println("PowerInterval exception caught in initialize( " + indx + ", " + duration + ", " + greenAt + " ).  Please check the settings.  error=" + ex.getErrorMessage());
+                System.println("Property:  Target" + indx + " = " + app.getProperty("Target" + indx));
+                ex.printStackTrace();
+                // set the target to 2 and continue.  the user will need to fix the property setting.
                 m_target = 2;
             }
+
             m_greenAt = Math.floor(greenAt * m_target);
             m_lastTotal = 0;
             m_average = 0;

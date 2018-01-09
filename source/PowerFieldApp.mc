@@ -58,7 +58,16 @@ class PowerFieldApp extends App.AppBase
     //! Return the initial view of your application here
     function getInitialView()
     {
-        return [ new PowerFieldView(), new PowerFieldDelegate() ];
+        try
+        {
+            return [ new PowerFieldView(), new PowerFieldDelegate() ];
+        }
+        catch(ex)
+        {
+            System.println("PowerFieldApp exception caught in getInitialView.  Please check the settings.  error=" + ex.getErrorMessage());
+            ex.printStackTrace();
+            throw ex;
+        }
     }
 
     //! toggle the active column index
